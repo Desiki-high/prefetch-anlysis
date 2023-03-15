@@ -1,3 +1,0 @@
-timestamp,repo,bench,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)
-1672232690220,node,node:nydus_pf, 1.251708, 1.025122, 3.629980, 5.906810
-1672232695716,node,node:nydus_pf, 1.237666, 0.491216, 3.817115, 5.545997
