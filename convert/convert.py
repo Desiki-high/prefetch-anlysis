@@ -61,7 +61,6 @@ class Image:
 
 
 def main():
-
     parser = ArgumentParser()
     parser.add_argument(
         '-i',
