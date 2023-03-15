@@ -1,0 +1,10 @@
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 1.040368", "create_time": " 0.600280", "run_time": " 2.863043", "elapsed": " 4.503691"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.844814", "create_time": " 0.557204", "run_time": " 3.096183", "elapsed": " 4.498201"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.836890", "create_time": " 0.457686", "run_time": " 3.288090", "elapsed": " 4.582666"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.839394", "create_time": " 0.417860", "run_time": " 3.127568", "elapsed": " 4.384822"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.837060", "create_time": " 0.517622", "run_time": " 2.926270", "elapsed": " 4.280952"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.839246", "create_time": " 0.494700", "run_time": " 2.887648", "elapsed": " 4.221594"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.835520", "create_time": " 0.432758", "run_time": " 3.113134", "elapsed": " 4.381412"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.846714", "create_time": " 0.437930", "run_time": " 2.893054", "elapsed": " 4.177698"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.835364", "create_time": " 0.456100", "run_time": " 3.038369", "elapsed": " 4.329833"}
+{"repo": "nginx", "bench": "nginx:nydus", "pull_time": " 0.851042", "create_time": " 0.457030", "run_time": " 2.872168", "elapsed": " 4.180240"}

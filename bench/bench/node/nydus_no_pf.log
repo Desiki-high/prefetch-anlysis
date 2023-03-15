@@ -1,0 +1,10 @@
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.248564", "create_time": " 0.567788", "run_time": " 25.660561", "elapsed": " 27.476913"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.235850", "create_time": " 0.416836", "run_time": " 25.642239", "elapsed": " 27.294925"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.236544", "create_time": " 0.450260", "run_time": " 25.791305", "elapsed": " 27.478109"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.442820", "create_time": " 0.432802", "run_time": " 32.363733", "elapsed": " 34.239355"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.238100", "create_time": " 0.512502", "run_time": " 26.006782", "elapsed": " 27.757384"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.234338", "create_time": " 0.474152", "run_time": " 25.514625", "elapsed": " 27.223115"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.243406", "create_time": " 0.402634", "run_time": " 25.889211", "elapsed": " 27.535251"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.252428", "create_time": " 0.455416", "run_time": " 25.245225", "elapsed": " 26.953069"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.238628", "create_time": " 0.426818", "run_time": " 32.713548", "elapsed": " 34.378994"}
+{"repo": "node", "bench": "node:nydus", "pull_time": " 1.234418", "create_time": " 0.456326", "run_time": " 25.683941", "elapsed": " 27.374685"}

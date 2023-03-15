@@ -1,0 +1,10 @@
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.051066", "create_time": " 0.739976", "run_time": " 0.901052", "elapsed": " 2.692094"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.047064", "create_time": " 0.649340", "run_time": " 0.882488", "elapsed": " 2.578892"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.841870", "create_time": " 0.652722", "run_time": " 0.817688", "elapsed": " 3.312280"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.848816", "create_time": " 0.595914", "run_time": " 0.927286", "elapsed": " 3.372016"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.849372", "create_time": " 0.568276", "run_time": " 0.896066", "elapsed": " 3.313714"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.841098", "create_time": " 0.522232", "run_time": " 0.793754", "elapsed": " 3.157084"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.654942", "create_time": " 1.097130", "run_time": " 0.607516", "elapsed": " 3.359588"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.864178", "create_time": " 1.391754", "run_time": " 0.338468", "elapsed": " 3.594400"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.844150", "create_time": " 1.003226", "run_time": " 0.387018", "elapsed": " 3.234394"}
+{"repo": "python", "bench": "python:nydus", "pull_time": " 1.851564", "create_time": " 0.693050", "run_time": " 1.455432", "elapsed": " 4.000046"}

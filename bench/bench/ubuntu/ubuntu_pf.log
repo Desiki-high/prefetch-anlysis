@@ -1,0 +1,10 @@
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.841336", "create_time": " 0.718662", "run_time": " 0.271836", "elapsed": " 1.831834"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.834822", "create_time": " 0.776576", "run_time": " 0.280698", "elapsed": " 1.892096"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.840648", "create_time": " 0.774364", "run_time": " 0.330238", "elapsed": " 1.945250"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.836562", "create_time": " 0.767928", "run_time": " 0.288204", "elapsed": " 1.892694"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.635090", "create_time": " 0.745144", "run_time": " 0.305546", "elapsed": " 1.685780"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.844362", "create_time": " 0.741722", "run_time": " 0.291494", "elapsed": " 1.877578"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.840776", "create_time": " 0.722502", "run_time": " 0.323512", "elapsed": " 1.886790"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.836658", "create_time": " 0.752362", "run_time": " 0.294638", "elapsed": " 1.883658"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.835710", "create_time": " 0.735034", "run_time": " 0.323758", "elapsed": " 1.894502"}
+{"repo": "ubuntu", "bench": "ubuntu:nydus_pf", "pull_time": " 0.843940", "create_time": " 0.721100", "run_time": " 0.295898", "elapsed": " 1.860938"}

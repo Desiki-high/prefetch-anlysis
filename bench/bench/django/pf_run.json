@@ -1,0 +1,10 @@
+{"timestamp": 1672332850158, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.438620", "create_elapsed": " 0.571574", "run_elapsed": " 29.583096", "total_elapsed": " 31.593290"}
+{"timestamp": 1672332880829, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.439136", "create_elapsed": " 0.898280", "run_elapsed": " 29.310242", "total_elapsed": " 31.647658"}
+{"timestamp": 1672332911515, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.238836", "create_elapsed": " 0.479902", "run_elapsed": " 29.639145", "total_elapsed": " 31.357883"}
+{"timestamp": 1672332942167, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.242624", "create_elapsed": " 0.504460", "run_elapsed": " 29.622899", "total_elapsed": " 31.369983"}
+{"timestamp": 1672332972887, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.239008", "create_elapsed": " 0.490694", "run_elapsed": " 29.701943", "total_elapsed": " 31.431645"}
+{"timestamp": 1672333003706, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.240512", "create_elapsed": " 0.456452", "run_elapsed": " 29.760548", "total_elapsed": " 31.457512"}
+{"timestamp": 1672333034393, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.448962", "create_elapsed": " 0.473794", "run_elapsed": " 29.539762", "total_elapsed": " 31.462518"}
+{"timestamp": 1672333065249, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.235640", "create_elapsed": " 1.010866", "run_elapsed": " 29.515858", "total_elapsed": " 31.762364"}
+{"timestamp": 1672333095956, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.237610", "create_elapsed": " 0.469536", "run_elapsed": " 29.678595", "total_elapsed": " 31.385741"}
+{"timestamp": 1672333126764, "repo": "django", "bench": "django:nydus", "pull_elapsed": " 1.234772", "create_elapsed": " 0.482818", "run_elapsed": " 29.751924", "total_elapsed": " 31.469514"}

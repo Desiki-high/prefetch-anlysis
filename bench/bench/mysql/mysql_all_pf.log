@@ -1,0 +1,10 @@
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.236940", "create_time": " 0.534476", "run_time": " 22.070329", "elapsed": " 23.841745"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.051222", "create_time": " 0.425282", "run_time": " 21.849945", "elapsed": " 23.326449"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.237662", "create_time": " 0.457774", "run_time": " 22.041362", "elapsed": " 23.736798"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.247618", "create_time": " 0.532002", "run_time": " 21.824204", "elapsed": " 23.603824"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.036670", "create_time": " 0.529130", "run_time": " 22.015662", "elapsed": " 23.581462"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.038184", "create_time": " 0.481136", "run_time": " 22.093289", "elapsed": " 23.612609"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.239450", "create_time": " 0.853292", "run_time": " 21.831433", "elapsed": " 23.924175"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.235828", "create_time": " 0.436630", "run_time": " 21.934101", "elapsed": " 23.606559"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.048144", "create_time": " 0.484648", "run_time": " 22.245920", "elapsed": " 23.778712"}
+{"repo": "mysql", "bench": "mysql:nydus", "pull_time": " 1.238218", "create_time": " 0.492400", "run_time": " 21.712556", "elapsed": " 23.443174"}

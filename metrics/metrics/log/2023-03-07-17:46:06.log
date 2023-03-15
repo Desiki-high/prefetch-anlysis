@@ -1,0 +1,91 @@
+2023-46-07 17:46:06  INFO: alpine:nydus metrics collect start
+2023-47-07 17:47:10  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/2/fs/image/image.boot -V
+2023-47-07 17:47:10  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gfo5o4io39irdqg4g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-47-07 17:47:10  INFO: busybox:nydus metrics collect start
+2023-48-07 17:48:14  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/6/fs/image/image.boot -V
+2023-48-07 17:48:14  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gg85o4io39irdqg50/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-48-07 17:48:14  INFO: nginx:nydus metrics collect start
+2023-49-07 17:49:49  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/15/fs/image/image.boot -V
+2023-49-07 17:49:49  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3ggo5o4io39irdqg5g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-49-07 17:49:52  INFO: ubuntu:nydus metrics collect start
+2023-51-07 17:51:00  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/19/fs/image/image.boot -V
+2023-51-07 17:51:00  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3ghh5o4io39irdqg60/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-51-07 17:51:01  INFO: python:nydus metrics collect start
+2023-52-07 17:52:06  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/30/fs/image/image.boot -V
+2023-52-07 17:52:07  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gi25o4io39irdqg6g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-52-07 17:52:08  INFO: postgres:nydus metrics collect start
+2023-53-07 17:53:18  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/43/fs/image/image.boot -V
+2023-53-07 17:53:18  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gik5o4io39irdqg70/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-53-07 17:53:19  INFO: redis:nydus metrics collect start
+2023-54-07 17:54:22  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/51/fs/image/image.boot -V
+2023-54-07 17:54:22  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gj45o4io39irdqg7g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-54-07 17:54:23  INFO: node:nydus metrics collect start
+2023-56-07 17:56:26  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/63/fs/image/image.boot -V
+2023-56-07 17:56:26  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gjklo4io39irdqg80/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-56-07 17:56:27  INFO: httpd:nydus metrics collect start
+2023-57-07 17:57:31  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/70/fs/image/image.boot -V
+2023-57-07 17:57:31  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gkjdo4io39irdqg8g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-57-07 17:57:41  INFO: mongo:nydus metrics collect start
+2023-02-07 18:02:51  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/81/fs/image/image.boot -V
+2023-02-07 18:02:51  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gl65o4io39irdqg90/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-02-07 18:02:55  INFO: alpine:nydus metrics collect start
+2023-03-07 18:03:59  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/85/fs/image/image.boot -V
+2023-03-07 18:03:59  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gnk5o4io39irdqg9g/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-03-07 18:03:59  INFO: busybox:nydus metrics collect start
+2023-05-07 18:05:05  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/89/fs/image/image.boot -V
+2023-05-07 18:05:05  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3go4do4io39irdqga0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-05-07 18:05:05  INFO: nginx:nydus metrics collect start
+2023-06-07 18:06:09  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/98/fs/image/image.boot -V
+2023-06-07 18:06:09  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gokto4io39irdqgag/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-06-07 18:06:10  INFO: ubuntu:nydus metrics collect start
+2023-07-07 18:07:13  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/102/fs/image/image.boot -V
+2023-07-07 18:07:13  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gp55o4io39irdqgb0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-07-07 18:07:14  INFO: python:nydus metrics collect start
+2023-08-07 18:08:21  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/113/fs/image/image.boot -V
+2023-08-07 18:08:21  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gpllo4io39irdqgbg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-08-07 18:08:22  INFO: postgres:nydus metrics collect start
+2023-09-07 18:09:27  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/126/fs/image/image.boot -V
+2023-09-07 18:09:27  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gq65o4io39irdqgc0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-09-07 18:09:27  INFO: redis:nydus metrics collect start
+2023-10-07 18:10:31  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/134/fs/image/image.boot -V
+2023-10-07 18:10:31  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gqmdo4io39irdqgcg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-10-07 18:10:32  INFO: node:nydus metrics collect start
+2023-12-07 18:12:42  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/146/fs/image/image.boot -V
+2023-12-07 18:12:42  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gr6lo4io39irdqgd0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-12-07 18:12:43  INFO: httpd:nydus metrics collect start
+2023-13-07 18:13:47  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/153/fs/image/image.boot -V
+2023-13-07 18:13:47  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gs7do4io39irdqgdg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-13-07 18:13:58  INFO: mongo:nydus metrics collect start
+2023-18-07 18:18:45  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/164/fs/image/image.boot -V
+2023-18-07 18:18:45  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gsq5o4io39irdqge0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-18-07 18:18:56  INFO: alpine:nydus metrics collect start
+2023-20-07 18:20:03  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/168/fs/image/image.boot -V
+2023-20-07 18:20:03  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gv4lo4io39irdqgeg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-20-07 18:20:03  INFO: busybox:nydus metrics collect start
+2023-21-07 18:21:08  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/172/fs/image/image.boot -V
+2023-21-07 18:21:08  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3gvldo4io39irdqgf0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-21-07 18:21:08  INFO: nginx:nydus metrics collect start
+2023-22-07 18:22:19  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/181/fs/image/image.boot -V
+2023-22-07 18:22:19  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h05lo4io39irdqgfg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-22-07 18:22:20  INFO: ubuntu:nydus metrics collect start
+2023-23-07 18:23:25  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/185/fs/image/image.boot -V
+2023-23-07 18:23:25  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h0nto4io39irdqgg0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-23-07 18:23:25  INFO: python:nydus metrics collect start
+2023-24-07 18:24:31  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/196/fs/image/image.boot -V
+2023-24-07 18:24:31  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h18do4io39irdqggg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-24-07 18:24:32  INFO: postgres:nydus metrics collect start
+2023-25-07 18:25:37  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/209/fs/image/image.boot -V
+2023-25-07 18:25:37  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h1oto4io39irdqgh0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-25-07 18:25:37  INFO: redis:nydus metrics collect start
+2023-28-07 18:28:12  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/217/fs/image/image.boot -V
+2023-28-07 18:28:12  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h2dlo4io39irdqghg/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-28-07 18:28:13  INFO: node:nydus metrics collect start
+2023-30-07 18:30:49  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/229/fs/image/image.boot -V
+2023-30-07 18:30:50  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h3g5o4io39irdqgi0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-30-07 18:30:50  INFO: httpd:nydus metrics collect start
+2023-31-07 18:31:55  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/236/fs/image/image.boot -V
+2023-31-07 18:31:55  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h4ndo4io39irdqgig/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-32-07 18:32:06  INFO: mongo:nydus metrics collect start
+2023-38-07 18:38:29  INFO: nydus-image check -B /var/lib/containerd-nydus/snapshots/247/fs/image/image.boot -V
+2023-38-07 18:38:29  INFO: curl --unix-socket /var/lib/containerd-nydus/socket/cg3h5a5o4io39irdqgj0/api.sock -X GET http://localhost/api/v1/metrics/pattern
+2023-38-07 18:38:33  INFO: alpine:nydus metrics collect start
