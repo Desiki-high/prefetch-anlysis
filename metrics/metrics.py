@@ -106,6 +106,7 @@ class MetricsCollector:
         rc = os.system(cmd)
         assert rc == 0
 
+#  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间只能 存在时间误差
     def collect(self, repo, seconds, milliseconds):
         """
             waiting 10s for the container read file from the backend
@@ -148,6 +149,7 @@ class MetricsCollector:
                      item.access_times, item.file_size, item.file_type])
         self.colletc_ino(repo)
 
+#  问题二：依赖于埋点日志 log::info!() 需要转换为metrics 从接口拿数据更为合理
     def colletc_ino(self, repo):
         file_path = search_file(NYDUS_LOG_DIR, LOG_FILE)
         result = []
