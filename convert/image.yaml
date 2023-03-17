@@ -3,13 +3,4 @@ insecure_source_registry: False
 target_registry: dockerhub.kubekey.local/dfns
 insecure_target_registry: True
 images:
- - name: alpine:latest
- - name: busybox:latest
- - name: nginx:latest
- - name: ubuntu:latest
- - name: python:latest
- - name: postgres:latest
- - name: redis:latest
- - name: node:latest
- - name: httpd:latest
- - name: mongo:latest
+ - name: wordpress:latest
