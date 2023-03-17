@@ -56,15 +56,15 @@ class MetricsCollector:
         assert rc == 0
         create_cmd = self.create_container_cmd(image_ref, container_name, arg)
         print(create_cmd)
-        timestamp = int(datetime.datetime.now().timestamp() * 1000)
-        seconds = timestamp // 1000
-        milliseconds = timestamp % 1000
         print("Creating container for image %s ..." % image_ref)
         rc = os.system(create_cmd)
         assert rc == 0
         run_cmd = self.start_container_cmd(container_name)
         print(run_cmd)
         print("Running container %s ..." % container_name)
+        timestamp = int(datetime.datetime.now().timestamp() * 1000)
+        seconds = timestamp // 1000
+        milliseconds = timestamp % 1000
         rc = os.system(run_cmd)
         assert rc == 0
         self.collect(repo, seconds, milliseconds)
@@ -106,7 +106,7 @@ class MetricsCollector:
         rc = os.system(cmd)
         assert rc == 0
 
-#  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间只能 存在时间误差
+#  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间以启动时间为预取开始时间存在时间误差
     def collect(self, repo, seconds, milliseconds):
         """
             waiting 10s for the container read file from the backend
@@ -133,7 +133,7 @@ class MetricsCollector:
             socket, seconds, milliseconds, bootstap_data)
 
         header = ["file_path", "ino", "first_access_time",
-                  "access_times", "file_size", "file_type"]
+                  "access_times", "file_size"]
 
         file_name = posixpath.join(DATA_DIR, repo, datetime.datetime.now().strftime(
             '%Y-%m-%d-%H:%M:%S') + ".csv")
@@ -146,7 +146,7 @@ class MetricsCollector:
             for item in access_pattern:
                 writer.writerow(
                     [item.file_path, item.ino, item.first_access_time_secs * 10**6 + item.first_access_time_micros,
-                     item.access_times, item.file_size, item.file_type])
+                     item.access_times, item.file_size])
         self.colletc_ino(repo)
 
 #  问题二：依赖于埋点日志 log::info!() 需要转换为metrics 从接口拿数据更为合理

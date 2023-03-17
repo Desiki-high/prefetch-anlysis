@@ -1,9 +1,14 @@
 # Prefetch Acceleration
 
 ## Getting started
+Please ensure your `nerdctl` is beyond v0.22 and set the containerd environment for nydus.
+Before use this tool we should clear local images and containers.
 
-### Run metrics/convert
-Please ensure your `nerdctl` is beyond v0.22 and set the containerd environment for nydus and before use this tool we should clear image containers
+### Run main.py
+
+
+### Run convert.py and metrics.py
+
 ```shell
 # workdir /path/to/metrics
 # collect metrics (optional use -t 10 to controll the metrics times default once)
@@ -13,7 +18,7 @@ python3 convert.py -i image.yaml
 # you can also use the run.sh
 ```
 
-This is a example of the config.yaml
+This is a example of the config.yaml for metrics.py
 ```yaml
 # the registry of the images
 registry: dockerhub.kubekey.local/dfns
@@ -25,5 +30,6 @@ images:
    arg: -e MYSQL_ROOT_PASSWD=123456
  - name: node:nydus
 ```
+### Run bench.py
 
 ## Description
