@@ -1,13 +1,4 @@
 registry: dockerhub.kubekey.local/dfns
 insecure_registry: True
 images:
- - name: alpine:nydus
- - name: busybox:nydus
- - name: nginx:nydus
- - name: ubuntu:nydus
- - name: python:nydus
- - name: postgres:nydus
- - name: redis:nydus
- - name: node:nydus
- - name: httpd:nydus
- - name: mongo:nydus
+ - name: wordpress:nydus
