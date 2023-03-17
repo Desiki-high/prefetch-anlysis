@@ -62,12 +62,9 @@ class MetricsCollector:
         run_cmd = self.start_container_cmd(container_name)
         print(run_cmd)
         print("Running container %s ..." % container_name)
-        timestamp = int(datetime.datetime.now().timestamp() * 1000)
-        seconds = timestamp // 1000
-        milliseconds = timestamp % 1000
         rc = os.system(run_cmd)
         assert rc == 0
-        self.collect(repo, seconds, milliseconds)
+        self.collect(repo)
         self.clean_up(image_ref, container_name)
 
     def image_ref(self, repo):
@@ -107,12 +104,12 @@ class MetricsCollector:
         assert rc == 0
 
 #  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间以启动时间为预取开始时间存在时间误差
-    def collect(self, repo, seconds, milliseconds):
+    def collect(self, repo):
         """
-            waiting 10s for the container read file from the backend
+            waiting 60s for the container read file from the backend
             then collect the metrics
         """
-        time.sleep(60)
+        time.sleep(5)
         socket = search_file(API_DIR, "api.sock")
         if socket == None:
             print("can't find the api.sock")
@@ -130,7 +127,7 @@ class MetricsCollector:
 
         # access_pattern
         access_pattern = get_access_pattern(
-            socket, seconds, milliseconds, bootstap_data)
+            socket, bootstap_data)
 
         header = ["file_path", "ino", "first_access_time",
                   "access_times", "file_size"]
@@ -168,6 +165,22 @@ class MetricsCollector:
                 writer.writerow(header)
                 for item in result:
                     writer.writerow([int(num) for num in item.split()])
+
+
+def get_prefetchtime():
+    """
+    get prefetchtime from log(hack)
+    """
+    file_path = search_file(NYDUS_LOG_DIR, LOG_FILE)
+    result = []
+    if file_path != None:
+        with open(file_path) as file:
+            for line in file:
+                if line.find("prefetch_begin") != -1:
+                    logging.info(line)
+                    result = re.search(r'prefetch_begin:(\d+)$', line)
+                    return int(result.group(1))
+    return None
 
 # class BackendLatency:
 #     def __init__(self, latencys):
@@ -215,15 +228,14 @@ def get_file_by_bootstrap(bootstrap, inode):
     """
     with open(bootstrap, 'r') as file:
         for line in file:
-            if line.startswith("[") and line.find("[src/bin/nydus-image/validator.rs:31]") != -1:
+            if line.startswith("inode:"):
                 result = re.search(
-                    r'\s([a-z]*[A-Z]*)\s"([^"]+)".*ino (\d+).*i_size (\d+)', line)
-                value_file_type = result.group(1)
-                value_file_path = result.group(2)
-                value_ino = result.group(3)
-                value_file_size = result.group(4)
+                    r'"([^"]+)".*ino (\d+).*i_size (\d+)', line)
+                value_file_path = result.group(1)
+                value_ino = result.group(2)
+                value_file_size = result.group(3)
                 if int(value_ino) == inode:
-                    return value_file_type, value_file_path, value_file_size
+                    return value_file_path, value_file_size
     return None, None
 
 
@@ -233,19 +245,19 @@ def check_bootstrap(bootstrap):
     """
     file_path = random_string()
     cmd = ["nydus-image", "check"]
-    cmd.extend(["-B", bootstrap, "-V"])
+    cmd.extend(["-B", bootstrap, "-v"])
     with open(TEMP_DIR + "/" + file_path, 'w') as f:
         _ = run_cmd(
             cmd,
             shell=True,
-            stdout=subprocess.PIPE,
+            stdout=f,
             stderr=f,
         )
     return TEMP_DIR + "/" + file_path
 
 
 class AccessPattern:
-    def __init__(self, ino, file_path, access_times, first_access_time_secs, first_access_time_micros, file_size, file_type):
+    def __init__(self, file_path, ino, access_times, first_access_time_secs, first_access_time_micros, file_size):
         self.file_path = file_path
         self.ino = ino
         self.access_times = access_times
@@ -253,7 +265,6 @@ class AccessPattern:
         self.first_access_time_secs = first_access_time_secs
         self.first_access_time_micros = first_access_time_micros
         self.file_size = file_size
-        self.file_type = file_type
 
     def show(self):
         print("file_path: ", self.file_path)
@@ -264,7 +275,7 @@ class AccessPattern:
         print("latency: ", self.latency)
 
 
-def get_access_pattern(sock, time_sec, time_millis, bootstap_data):
+def get_access_pattern(sock, bootstap_data):
     """
     get the file access pattern from the sock
     """
@@ -273,17 +284,24 @@ def get_access_pattern(sock, time_sec, time_millis, bootstap_data):
         contents = file.read()
     resp = json.loads(contents)
     access_pattern_list = []
+    prefetch_begin_time = get_prefetchtime()
+    logging.info(prefetch_begin_time)
     for item in resp:
-        item['first_access_time_secs'] = item['first_access_time_secs'] - time_sec
+        logging.info(item['first_access_time_secs'])
+        logging.info(item["first_access_time_nanos"])
+        item['first_access_time_secs'] = item['first_access_time_secs'] - \
+            prefetch_begin_time // 1000000
         item["first_access_time_nanos"] = item["first_access_time_nanos"] // 1000 - \
-            (time_millis * 1000)
+            (prefetch_begin_time % 1000)
         if item["first_access_time_nanos"] < 0:
             item["first_access_time_nanos"] += 1000000
             item['first_access_time_secs'] -= 1
-        file_type, file_path, file_size = get_file_by_bootstrap(
+        file_path, file_size = get_file_by_bootstrap(
             bootstap_data, item['ino'])
+        logging.info(item['first_access_time_secs'])
+        logging.info(item["first_access_time_nanos"])
         access_pattern_list.append(AccessPattern(
-            file_path, item['ino'], item['nr_read'], item['first_access_time_secs'], item['first_access_time_nanos'], file_size, file_type))
+            file_path, item['ino'], item['nr_read'], item['first_access_time_secs'], item['first_access_time_nanos'], file_size))
     return access_pattern_list
 
 
