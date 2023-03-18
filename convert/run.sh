@@ -1,3 +1,3 @@
 #! /bin/bash
 
-python3 convert.py -i image.yaml
+python3 convert.py --config config.yaml

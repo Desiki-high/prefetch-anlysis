@@ -41,16 +41,16 @@ class Image:
 def main():
     parser = ArgumentParser()
     parser.add_argument(
-        '-i',
-        '--input',
-        dest='input',
+        '-c',
+        '--config',
+        dest='config',
         type=str,
         required=True,
         help='Input YAML file that conlude the images')
 
     args = parser.parse_args()
     images = {}
-    with open(args.input, 'r', encoding='utf-8') as f:
+    with open(args.config, 'r', encoding='utf-8') as f:
         try:
             images = yaml.load(stream=f, Loader=yaml.FullLoader)
         except Exception as inst:
