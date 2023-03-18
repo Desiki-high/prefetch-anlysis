@@ -109,7 +109,7 @@ class MetricsCollector:
             waiting 60s for the container read file from the backend
             then collect the metrics
         """
-        time.sleep(5)
+        time.sleep(60)
         socket = search_file(API_DIR, "api.sock")
         if socket == None:
             print("can't find the api.sock")
@@ -126,8 +126,7 @@ class MetricsCollector:
         bootstap_data = check_bootstrap(bootstrap)
 
         # access_pattern
-        access_pattern = get_access_pattern(
-            socket, bootstap_data)
+        access_pattern = get_access_pattern(socket, bootstap_data)
 
         header = ["file_path", "ino", "first_access_time",
                   "access_times", "file_size"]
@@ -152,11 +151,9 @@ class MetricsCollector:
         result = []
         if file_path != None:
             with open(file_path) as file:
-                result = re.findall(r"\d+\s+\d+\s+\d+\s+\d+\s+\d+$",
-                                    file.read(), re.MULTILINE)
+                result = re.findall(r"\d+\s+\d+\s+\d+\s+\d+\s+\d+$", file.read(), re.MULTILINE)
             header = ["ino", "offset", "size", "latency", "ino_access_time"]
-            file_name = posixpath.join(DATA_DIR, repo, datetime.datetime.now().strftime(
-                '%Y-%m-%d-%H:%M:%S')+"_ino" + ".csv")
+            file_name = posixpath.join(DATA_DIR, repo, datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')+"_ino" + ".csv")
             if not os.path.exists(file_name):
                 os.makedirs(posixpath.join(DATA_DIR, repo), exist_ok=True)
                 os.mknod(file_name)
@@ -229,8 +226,7 @@ def get_file_by_bootstrap(bootstrap, inode):
     with open(bootstrap, 'r') as file:
         for line in file:
             if line.startswith("inode:"):
-                result = re.search(
-                    r'"([^"]+)".*ino (\d+).*i_size (\d+)', line)
+                result = re.search(r'"([^"]+)".*ino (\d+).*i_size (\d+)', line)
                 value_file_path = result.group(1)
                 value_ino = result.group(2)
                 value_file_size = result.group(3)
@@ -280,26 +276,21 @@ def get_access_pattern(sock, bootstap_data):
     get the file access pattern from the sock
     """
     contents = ""
-    with open(send_request(sock, ACCESS_PATTERN_METRICS), 'r') as file:
-        contents = file.read()
+    while contents.endswith("]") == False:
+        with open(send_request(sock, ACCESS_PATTERN_METRICS), 'r') as file:
+            contents = file.read()
     resp = json.loads(contents)
     access_pattern_list = []
     prefetch_begin_time = get_prefetchtime()
-    logging.info(prefetch_begin_time)
     for item in resp:
         logging.info(item['first_access_time_secs'])
         logging.info(item["first_access_time_nanos"])
-        item['first_access_time_secs'] = item['first_access_time_secs'] - \
-            prefetch_begin_time // 1000000
-        item["first_access_time_nanos"] = item["first_access_time_nanos"] // 1000 - \
-            (prefetch_begin_time % 1000)
+        item['first_access_time_secs'] = item['first_access_time_secs'] - prefetch_begin_time // 1000000
+        item["first_access_time_nanos"] = item["first_access_time_nanos"] // 1000 - (prefetch_begin_time % 1000)
         if item["first_access_time_nanos"] < 0:
             item["first_access_time_nanos"] += 1000000
             item['first_access_time_secs'] -= 1
-        file_path, file_size = get_file_by_bootstrap(
-            bootstap_data, item['ino'])
-        logging.info(item['first_access_time_secs'])
-        logging.info(item["first_access_time_nanos"])
+        file_path, file_size = get_file_by_bootstrap(bootstap_data, item['ino'])
         access_pattern_list.append(AccessPattern(
             file_path, item['ino'], item['nr_read'], item['first_access_time_secs'], item['first_access_time_nanos'], file_size))
     return access_pattern_list
@@ -428,9 +419,9 @@ def main():
 
     parser = ArgumentParser()
     parser.add_argument(
-        '-i',
-        '--input',
-        dest='input',
+        '-c',
+        '--config',
+        dest='config',
         type=str,
         required=True,
         help='Input YAML configuration file')
@@ -445,7 +436,7 @@ def main():
 
     args = parser.parse_args()
     cfg = {}
-    with open(args.input, 'r', encoding='utf-8') as f:
+    with open(args.config, 'r', encoding='utf-8') as f:
         try:
             cfg = yaml.load(stream=f, Loader=yaml.FullLoader)
         except Exception as inst:

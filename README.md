@@ -15,9 +15,9 @@ Before use this tool we should clear local images and containers.
 ```shell
 # workdir /path/to/metrics
 # collect metrics (optional use -t 10 to controll the metrics times default once)
-python3 metrics.py -i config.yaml
+python3 metrics.py --config config.yaml
 # conver dockerhub image to nydus format 
-python3 convert.py -i image.yaml
+python3 convert.py --config config.yaml
 # you can also use the run.sh
 ```
 

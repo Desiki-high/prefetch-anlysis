@@ -1,3 +1,3 @@
 #! /bin/bash
 
-python3 metrics.py -i config.yaml -t $1
+python3 metrics.py --config config.yaml -t 1
