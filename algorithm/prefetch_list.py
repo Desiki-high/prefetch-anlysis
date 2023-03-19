@@ -82,7 +82,7 @@ def to_txt(file_list: list, outpath: str):
     """
     prefetch_list to txt
     """
-    with open('{}.txt'.format(outpath), 'w')as f:
+    with open(outpath, 'w')as f:
         for k in file_list:
             f.write(k + '\n')
 
@@ -91,7 +91,9 @@ def get_prefetch_list(csv_path: str, ino_csv_path: str) -> list:
     """
     get prefetch_list
     """
-    return optimize_list(csv_path, ino_csv_path)
+    optimized_list = optimize_list(csv_path, ino_csv_path)
+    to_txt(optimized_list, 'algorithm/out.txt')
+    return optimized_list
 
 
 if __name__ == '__main__':
