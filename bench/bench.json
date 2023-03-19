@@ -1,1 +1,1 @@
-{"timestamp": 1679199036890, "registry": "dockerhub.kubekey.local/dfns", "repo": "alpine:nydus", "pull_elapsed": " 2.107198", "create_elapsed": " 7.669458", "run_elapsed": " 2.134018", "total_elapsed": " 11.910674"}
+{"timestamp": 1679199359390, "registry": "", "repo": "alpine", "pull_elapsed": " 12.553480", "create_elapsed": " 0.247966", "run_elapsed": " 0.292918", "total_elapsed": " 13.094364"}
