@@ -1,5 +1,5 @@
 # Prefetch Acceleration
-Work in nydus v2.1.5
+Work in nydus v2.2.0
 
 
 ## Getting started
@@ -34,7 +34,7 @@ images:
  - name: node:nydus
 ```
 ### Run bench.py
-Please ensure your `nerdctl` is beyond v0.22 and have environment for nydus
+Please ensure your `nerdctl` is beyond v0.22 and have containerd environment for nydus
 ```shell
 # To run benchmark for nydus snapshotter.
 ./hello.py --snapshotter nydus --registry=dockerhub.kubekey.local/dfns --insecure-registry --images alpine:nydus
