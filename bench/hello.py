@@ -132,86 +132,9 @@ class RunArgs:
         self.waitURL = waitURL
 
 
-class Docker:
-    def __init__(self, bin="docker"):
-        self.bin = bin
-
-    def set_image(self, ref):
-        self.image_ref = ref
-        return self
-
-    def set_snapshotter(self, sn="overlayfs"):
-        self.snapshotter = sn
-        return self
-
-    def run(
-        self,
-        network="none",
-        name=None,
-        background=False,
-        enable_stdin=False,
-        envs=[],
-        run_cmd_args=None,
-        volumes=[],
-        stdin=None,
-        stdout=None,
-    ):
-        cmd = [self.bin, "--snapshotter", self.snapshotter, "run"]
-        cmd.append(f"--net={network}")
-
-        if enable_stdin:
-            cmd.append("-i")
-
-        cmd.append("--rm")
-
-        if name is not None:
-            cmd.append(f"--name={name}")
-
-        for (s, d) in volumes:
-            cmd.extend(["-v", f"{s}:{d}"])
-
-        for (k, v) in envs:
-            cmd.extend(["-e", f"{k}={v}"])
-
-        cmd.append(self.image_ref)
-
-        if run_cmd_args is not None:
-            cmd.append(run_cmd_args)
-
-        _, p = run(
-            cmd,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=sys.stdout if stdout is None else stdout,
-            stderr=sys.stderr if stdout is None else stdout,
-            wait=False,
-        )
-
-        if stdin is not None:
-            out = p.communicate(input=stdin)
-
-        if not background:
-            p.wait()
-            assert p.returncode == 0
-        else:
-            return p
-
-    def kill(self, name):
-        cmd = [self.bin, "kill", name]
-        _, p = run(
-            cmd,
-            shell=True,
-            stdin=subprocess.PIPE,
-            stdout=sys.stdout,
-            stderr=sys.stderr,
-            wait=True,
-        )
-
-
 class Bench:
     def __init__(self, name, category="other"):
         self.name = name
-        self.repo = name  # TODO: maybe we'll eventually have multiple benches per repo
         self.category = category
 
     def __str__(self):
@@ -393,9 +316,7 @@ class BenchRunner:
 
     def __init__(
         self,
-        docker="docker",
         registry="localhost:5000",
-        registry2="localhost:5000",
         snapshotter="overlayfs",
         cleanup=True,
         insecure_registry=False,
@@ -403,20 +324,36 @@ class BenchRunner:
         self.registry = registry
         if self.registry != "":
             self.registry += "/"
-        self.registry2 = registry2
-        if self.registry2 != "":
-            self.registry2 += "/"
 
         self.snapshotter = snapshotter
         self.insecure_registry = insecure_registry
 
-        self.docker = Docker(bin=docker)
-        if "nerdctl" == docker:
-            self.docker.set_snapshotter(snapshotter)
         self.cleanup = cleanup
 
     def image_ref(self, repo):
         return posixpath.join(self.registry, repo)
+
+    def run(self, bench):
+        repo = image_repo(bench.name)
+        if repo in BenchRunner.ECHO_HELLO:
+            return self.run_echo_hello(repo=bench.name)
+        elif repo in BenchRunner.CMD_ARG:
+            return self.run_cmd_arg(repo=bench.name, runargs=BenchRunner.CMD_ARG[repo])
+        elif repo in BenchRunner.CMD_ARG_WAIT:
+            return self.run_cmd_arg_wait(
+                repo=bench.name, runargs=BenchRunner.CMD_ARG_WAIT[repo]
+            )
+        elif repo in BenchRunner.CMD_STDIN:
+            return self.run_cmd_stdin(
+                repo=bench.name, runargs=BenchRunner.CMD_STDIN[repo]
+            )
+        elif repo in BenchRunner.CMD_URL_WAIT:
+            return self.run_cmd_url_wait(
+                repo=bench.name, runargs=BenchRunner.CMD_URL_WAIT[repo]
+            )
+        else:
+            print("Unknown bench: " + repo)
+            exit(1)
 
     def run_echo_hello(self, repo: str):
         image_ref = self.image_ref(repo)
@@ -621,28 +558,6 @@ class BenchRunner:
 
         return pull_elapsed, create_elapsed, run_elapsed
 
-    def run(self, bench):
-        repo = image_repo(bench.name)
-        if repo in BenchRunner.ECHO_HELLO:
-            return self.run_echo_hello(repo=bench.name)
-        elif repo in BenchRunner.CMD_ARG:
-            return self.run_cmd_arg(repo=bench.name, runargs=BenchRunner.CMD_ARG[repo])
-        elif repo in BenchRunner.CMD_ARG_WAIT:
-            return self.run_cmd_arg_wait(
-                repo=bench.name, runargs=BenchRunner.CMD_ARG_WAIT[repo]
-            )
-        elif repo in BenchRunner.CMD_STDIN:
-            return self.run_cmd_stdin(
-                repo=bench.name, runargs=BenchRunner.CMD_STDIN[repo]
-            )
-        elif repo in BenchRunner.CMD_URL_WAIT:
-            return self.run_cmd_url_wait(
-                repo=bench.name, runargs=BenchRunner.CMD_URL_WAIT[repo]
-            )
-        else:
-            print("Unknown bench: " + repo)
-            exit(1)
-
     def pull_cmd(self, image_ref):
         insecure_flag = "--insecure-registry" if self.insecure_registry else ""
         return (
@@ -733,7 +648,6 @@ def image_tag(ref: str) -> str:
 
 def main():
     benches = []
-    kvargs = {"out": "bench"}
 
     parser = ArgumentParser()
     parser.add_argument(
@@ -745,19 +659,7 @@ def main():
     )
 
     parser.add_argument(
-        "--engine",
-        type=str,
-        default="docker",
-    )
-
-    parser.add_argument(
         "--registry",
-        type=str,
-        default="",
-    )
-
-    parser.add_argument(
-        "--registry2",
         type=str,
         default="",
     )
@@ -775,14 +677,9 @@ def main():
     )
 
     parser.add_argument(
-        "--tag",
-        type=str,
-        default="latest",
-    )
-
-    parser.add_argument(
         "--no-cleanup", dest="no_cleanup", action="store_true", required=False
     )
+
     parser.add_argument(
         "--insecure-registry",
         dest="insecure_registry",
@@ -808,8 +705,6 @@ def main():
     args = parser.parse_args()
 
     registry = args.registry
-    registry2 = args.registry2
-    docker = args.engine
     all_supported_images = args.all_supported_images
     images_list = args.images_list
     snapshotter = args.snapshotter
@@ -834,15 +729,11 @@ def main():
             except KeyError:
                 logging.warning("image %s not supported, skip", i)
 
-    outpath = kvargs.pop("out")
-    op = kvargs.pop("op", "run")
-    f = open(outpath + "." + output_format, "w")
+    f = open("bench." + output_format, "w")
 
     # run benchmarks
     runner = BenchRunner(
-        docker=docker,
         registry=registry,
-        registry2=registry2,
         snapshotter=snapshotter,
         cleanup=cleanup,
         insecure_registry=insecure_registry,
@@ -866,8 +757,8 @@ def main():
             if output_format == "json":
                 row = {
                     "timestamp": timetamp,
-                    "repo": bench.repo,
-                    "bench": bench.name,
+                    "registry": args.registry,
+                    "repo": bench.name,
                     "pull_elapsed": pull_elapsed,
                     "create_elapsed": create_elapsed,
                     "run_elapsed": run_elapsed,
