@@ -17,10 +17,6 @@ from argparse import ArgumentParser
 from contextlib import contextmanager
 from datetime import datetime
 
-NGINX_PORT = 20000
-IOJS_PORT = 20001
-NODE_PORT = 20002
-REGISTRY_PORT = 20003
 TMP_DIR = tempfile.mkdtemp()
 
 
