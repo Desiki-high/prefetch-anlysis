@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 
+import copy
+import json
 import logging
-import os, sys, subprocess, random, urllib.request, time, json, tempfile, shutil, copy
+import os
 import posixpath
+import random
+import shutil
 import string
+import subprocess
+import sys
+import tempfile
+import time
+import urllib.request
 from argparse import ArgumentParser
-from datetime import datetime
 from contextlib import contextmanager
+from datetime import datetime
 
 NGINX_PORT = 20000
 IOJS_PORT = 20001
@@ -834,7 +843,7 @@ def main():
         "--bench-times",
         dest="bench_times",
         type=int,
-        default= 1,
+        default=1,
     )
 
     args = parser.parse_args()
