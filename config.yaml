@@ -1,0 +1,8 @@
+source_registry: docker.io
+insecure_source_registry: False
+local_registry: dockerhub.kubekey.local/dfns
+insecure_local_registry: True
+convert: False
+images:
+ - oci: wordpress:php8.2
+   nydus: wordpress_nydus:php8.2
