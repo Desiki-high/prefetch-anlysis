@@ -714,44 +714,10 @@ class BenchRunner:
         print(cmd)
         rc = os.system(cmd)
         assert rc == 0
-        cmd = md = f"nerdctl --snapshotter {self.snapshotter} rmi -f {image_ref}"
+        cmd = f"nerdctl --snapshotter {self.snapshotter} rmi -f {image_ref}"
         print(cmd)
         rc = os.system(cmd)
         assert rc == 0
-
-    def pull(self, bench):
-        cmd = f"{self.docker} pull {self.registry}{bench.name}"
-        rc = os.system(cmd)
-        assert rc == 0
-
-    def push(self, bench):
-        cmd = f"{self.docker} push {self.registry}{bench.name}"
-        rc = os.system(cmd)
-        assert rc == 0
-
-    def tag(self, bench):
-        cmd = "%s tag %s%s %s%s" % (
-            self.docker,
-            self.registry,
-            bench.name,
-            self.registry2,
-            bench.name,
-        )
-        rc = os.system(cmd)
-        assert rc == 0
-
-    def operation(self, op, bench):
-        if op == "run":
-            return self.run(bench)
-        elif op == "pull":
-            self.pull(bench)
-        elif op == "push":
-            self.push(bench)
-        elif op == "tag":
-            self.tag(bench)
-        else:
-            print("Unknown operation: " + op)
-            exit(1)
 
 
 def image_repo(ref: str):
@@ -801,13 +767,6 @@ def main():
     )
 
     parser.add_argument(
-        "--op",
-        type=str,
-        choices=["run", "push", "pull", "tag"],
-        default="pull",
-    )
-
-    parser.add_argument(
         "--snapshotter",
         type=str,
         help="only applied with containerd",
@@ -848,7 +807,6 @@ def main():
 
     args = parser.parse_args()
 
-    op = args.op
     registry = args.registry
     registry2 = args.registry2
     docker = args.engine
@@ -897,7 +855,7 @@ def main():
 
     for bench in benches:
         for _ in range(bench_times):
-            pull_elapsed, create_elapsed, run_elapsed = runner.operation(op, bench)
+            pull_elapsed, create_elapsed, run_elapsed = runner.run(bench)
 
             total_elapsed = f"{pull_elapsed + create_elapsed + run_elapsed: .6f}"
             timetamp = int(time.time() * 1000)
