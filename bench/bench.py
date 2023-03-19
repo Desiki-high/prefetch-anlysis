@@ -229,6 +229,7 @@ class BenchRunner:
 
     CMD_URL_WAIT = {
         "nginx": RunArgs(waitURL="http://localhost:80"),
+        "wordpress": RunArgs(waitURL="http://localhost:80"),
         "iojs": RunArgs(
             arg="iojs /src/index.js",
             mount=[("iojs", "/src")],
@@ -306,6 +307,7 @@ class BenchRunner:
                 Bench("rails", "web-framework"),
                 Bench("node", "web-framework"),
                 Bench("iojs", "web-framework"),
+                Bench("wordpress", "web-framework"),
             ]
         ]
     )
