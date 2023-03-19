@@ -1,12 +1,13 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 
-import os
-import json
-import pandas as pd
-import shutil
-import matplotlib.pyplot as plt
-from pandas.api.types import CategoricalDtype
 import argparse
+import json
+import os
+import shutil
+
+import matplotlib.pyplot as plt
+import pandas as pd
+from pandas.api.types import CategoricalDtype
 
 parser = argparse.ArgumentParser(
     description="Handle data of hello bench to csv and png"
