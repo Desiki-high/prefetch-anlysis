@@ -1,9 +1,9 @@
 .vscode
 .idea
 
-**/__pycache__/**
-**/metrics/tmp/**
-**/metrics/data/**
-**/metrics/log/**
+**/__pycache__
+**/metrics/tmp
+**/metrics/data
+**/metrics/log
 
-**/convert/tmp/**
+**/convert/tmp
