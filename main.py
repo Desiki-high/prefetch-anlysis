@@ -33,10 +33,14 @@ def main():
         if cfg["convert"]:
             convert(cfg, image)
     util.clean_nerdctl()
-    # collect metrics, get prefetch list , rebuild  image , bench
     for image in cfg["images"]:
+        # collect metrics
         file, ino = collect_metrics(cfg, image)
+        # get prefetch list
         _ = alg.get_prefetch_list(file, ino)
+        # rebuild
+        cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
+        # bench
 
 
 def convert(cfg: dict, image: str):

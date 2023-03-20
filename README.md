@@ -5,10 +5,11 @@ Work in nydus v2.2.0
 ## Getting started
 Please ensure your `nerdctl` is beyond v0.22 and set the containerd environment for nydus.
 Before use this tool we should clear local images and containers.
-
+Please run this tool in root
 
 ### Run main.py
-
+workdir /path/to
+./main.py
 
 ### Run convert.py and metrics.py
 
