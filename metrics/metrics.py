@@ -451,6 +451,10 @@ def main():
         os.mkdir(TEMP_DIR)
 
 
+def metrics():
+    print("test")
+
+
 if __name__ == "__main__":
     main()
     exit(0)
