@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 
-import sys
-import os
-import random
-import string
+import csv
 import datetime
 import json
-import shutil
-import subprocess
 import logging
-import yaml
+import os
 import posixpath
-import time
-import csv
+import random
 import re
+import shutil
+import string
+import subprocess
+import sys
+import time
 from argparse import ArgumentParser
+
+import yaml
 
 """
 define some file path, binary path and sock api url
