@@ -12,7 +12,7 @@ def main():
     5. use the prefetch file list to rebuild the image
     6. bench the oci image use overlayfs,the nydus image without prefetch and the nydus image with prefetch(maybe we need to enable prefetch by change the config.json and restart the snapshotter service)
     """
-    util.change_config_prefetch_enable()
+    pass
 
 
 if __name__ == "__main__":
