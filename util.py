@@ -24,9 +24,18 @@ def clean_nydus():
 def get_nydus_config() -> dict:
     config = []
     with open(NYDUS_CONFIG, 'r', encoding='utf-8') as f:
-        objectDict = json.load(f)
-        print(objectDict)
+        config = json.load(f)
     return config
+
+
+def change_config_prefetch_enable():
+    """
+    change the fs_prefetch.enable status
+    """
+    config = get_nydus_config()
+    config["fs_prefetch"]["enable"] = not config["fs_prefetch"]["enable"]
+    with open(NYDUS_CONFIG, 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
 
 
 def reload_nydus():
