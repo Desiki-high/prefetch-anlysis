@@ -8,7 +8,7 @@ NYDUS_CONFIG = "/etc/nydus/config.json"
 NYDUS_DIR = "/var/lib/containerd-nydus"
 CONTAINRD_DIR = "/var/lib/containerd"
 NYDUS_RUN_DIR = "/run/containerd-nydus"
-CONTAINRD_RUN_DIR = "/var/containerd"
+CONTAINRD_RUN_DIR = "/run/containerd"
 
 
 def clean_nerdctl():
@@ -50,3 +50,14 @@ def clean_env():
     rc = os.system("systemctl start nydus-snapshotter.service")
     rc = os.system("systemctl start containerd.service")
     assert rc == 0
+
+
+def image_repo(ref: str):
+    return ref.split(":")[0]
+
+
+def image_tag(ref: str) -> str:
+    try:
+        return ref.split(":")[1]
+    except IndexError:
+        return None
