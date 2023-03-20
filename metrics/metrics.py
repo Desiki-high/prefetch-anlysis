@@ -451,7 +451,7 @@ def main():
         os.mkdir(TEMP_DIR)
 
 
-def metrics():
+def collect():
     print("test")
 
 
