@@ -4,5 +4,4 @@ local_registry: dockerhub.kubekey.local/dfns
 insecure_local_registry: True
 convert: False
 images:
- - oci: wordpress:php8.2
-   nydus: wordpress_nydus:php8.2
+ - wordpress:php8.2

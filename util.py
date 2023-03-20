@@ -6,9 +6,12 @@ import subprocess
 
 NYDUS_CONFIG = "/etc/nydus/config.json"
 NYDUS_DIR = "/var/lib/containerd-nydus"
+CONTAINRD_DIR = "/var/lib/containerd"
+NYDUS_RUN_DIR = "/run/containerd-nydus"
+CONTAINRD_RUN_DIR = "/var/containerd"
 
 
-def clean_nydus():
+def clean_nerdctl():
     """
     clear all containers and images and rm nydus workdir
     """
@@ -17,8 +20,6 @@ def clean_nydus():
     assert result.returncode == 0
     cmd = ["nerdctl", "rmi", "-f", "$(nerdctl images -q)"]
     result = subprocess.run(cmd, capture_output=True)
-    assert result.returncode == 0
-    shutil.rmtree(NYDUS_DIR)
 
 
 def get_nydus_config() -> dict:
@@ -38,6 +39,14 @@ def change_config_prefetch_enable():
         json.dump(config, f, ensure_ascii=False, indent=4)
 
 
-def reload_nydus():
-    rc = os.system("systemctl restart nydus-snapshotter.service")
+def clean_env():
+    clean_nerdctl()
+    rc = os.system("systemctl stop nydus-snapshotter.service")
+    rc = os.system("systemctl stop containerd.service")
+    shutil.rmtree(NYDUS_DIR)
+    shutil.rmtree(CONTAINRD_DIR)
+    shutil.rmtree(NYDUS_RUN_DIR)
+    shutil.rmtree(CONTAINRD_RUN_DIR)
+    rc = os.system("systemctl start nydus-snapshotter.service")
+    rc = os.system("systemctl start containerd.service")
     assert rc == 0
