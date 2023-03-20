@@ -180,7 +180,6 @@ def get_prefetchtime():
         with open(file_path) as file:
             for line in file:
                 if line.find("prefetch_begin") != -1:
-                    logging.info(line)
                     result = re.search(r'prefetch_begin:(\d+)$', line)
                     return int(result.group(1))
     return None
@@ -289,8 +288,6 @@ def get_access_pattern(sock, bootstap_data):
     access_pattern_list = []
     prefetch_begin_time = get_prefetchtime()
     for item in resp:
-        logging.info(item['first_access_time_secs'])
-        logging.info(item["first_access_time_nanos"])
         item['first_access_time_secs'] = item['first_access_time_secs'] - prefetch_begin_time // 1000000
         item["first_access_time_nanos"] = item["first_access_time_nanos"] // 1000 - (prefetch_begin_time % 1000)
         if item["first_access_time_nanos"] < 0:
