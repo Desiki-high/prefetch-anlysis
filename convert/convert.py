@@ -106,6 +106,28 @@ def main():
               item["name"]).nydus_convert()
 
 
+def convert_nydus(source_registry: str, insecure_source_registry: bool, target_registry: str, insecure_target_registry: bool, image: str):
+    """
+    convert nydus image api
+    """
+    Image(source_registry,
+          insecure_source_registry,
+          target_registry,
+          insecure_target_registry,
+          image).nydus_convert()
+
+
+def convert_oci(source_registry: str, insecure_source_registry: bool, target_registry: str, insecure_target_registry: bool, image: str):
+    """
+    convert oci image api
+    """
+    Image(source_registry,
+          insecure_source_registry,
+          target_registry,
+          insecure_target_registry,
+          image).tag_convert
+
+
 if __name__ == "__main__":
     main()
     exit(0)
