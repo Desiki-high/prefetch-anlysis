@@ -58,16 +58,21 @@ class Image:
     def tag_convert(self):
         source_image = self.source_registry + "/" + self.image
         target_image = self.target_registry + "/" + self.image
+        cmd = ""
         if self.insecure_source_registry:
-            pull_cmd = f"nerdctl pull {source_image} --insecure-registry"
-        rc = os.system(pull_cmd)
+            cmd = f"nerdctl pull {source_image} --insecure-registry"
+        else:
+            cmd = f"nerdctl pull {source_image}"
+        rc = os.system(cmd)
         assert rc == 0
         tag_cmd = f"nerdctl tag {source_image} {target_image}"
         rc = os.system(tag_cmd)
         assert rc == 0
         if self.insecure_target_registry:
-            push_cmd = f"nerdctl push {target_image} --insecure-registry"
-        rc = os.system(push_cmd)
+            cmd = f"nerdctl push {target_image} --insecure-registry"
+        else:
+            cmd = f"nerdctl push {target_image}"
+        rc = os.system(cmd)
         assert rc == 0
 
     def nydus_convert(self):
@@ -136,7 +141,7 @@ def convert_oci(source_registry: str, insecure_source_registry: bool, target_reg
           insecure_source_registry,
           target_registry,
           insecure_target_registry,
-          image).tag_convert
+          image).tag_convert()
 
 
 if __name__ == "__main__":
