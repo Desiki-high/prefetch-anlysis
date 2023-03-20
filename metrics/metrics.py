@@ -39,15 +39,17 @@ class MetricsCollector:
         self.insecure_registry = cfg["insecure_registry"]
         self.images = cfg["images"]
 
-    def start_collet(self):
+    def start_collet(self) -> list[tuple[str, str]]:
+        files = []
         for i in range(len(self.images)):
             logging.info(self.images[i]["name"] + " metrics collect start")
             if "arg" not in self.images[i]:
-                self.run(self.images[i]["name"])
+                files.append(self.run(self.images[i]["name"]))
             else:
-                self.run(self.images[i]["name"], arg=self.images[i]["arg"])
+                files.append(self.run(self.images[i]["name"], arg=self.images[i]["arg"]))
+        return files
 
-    def run(self, repo: str, arg=""):
+    def run(self, repo: str, arg="") -> tuple[str, str]:
         image_ref = self.image_ref(repo)
         container_name = repo.replace(":", "-") + random_string()
         pull_cmd = self.pull_cmd(image_ref)
@@ -65,8 +67,9 @@ class MetricsCollector:
         print("Running container %s ..." % container_name)
         rc = os.system(run_cmd)
         assert rc == 0
-        self.collect(repo)
+        file, ino = self.collect(repo)
         self.clean_up(image_ref, container_name)
+        return file, ino
 
     def image_ref(self, repo):
         return posixpath.join(self.registry, repo)
@@ -105,7 +108,7 @@ class MetricsCollector:
         assert rc == 0
 
 #  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间以启动时间为预取开始时间存在时间误差
-    def collect(self, repo):
+    def collect(self, repo) -> tuple[str, str]:
         """
             waiting 60s for the container read file from the backend
             then collect the metrics
@@ -144,10 +147,10 @@ class MetricsCollector:
                 writer.writerow(
                     [item.file_path, item.ino, item.first_access_time_secs * 10**6 + item.first_access_time_micros,
                      item.access_times, item.file_size])
-        self.colletc_ino(repo)
+        return file_name, self.colletc_ino(repo)
 
 #  问题二：依赖于埋点日志 log::info!() 需要转换为metrics 从接口拿数据更为合理
-    def colletc_ino(self, repo):
+    def colletc_ino(self, repo) -> str:
         file_path = search_file(NYDUS_LOG_DIR, LOG_FILE)
         result = []
         if file_path != None:
@@ -163,6 +166,8 @@ class MetricsCollector:
                 writer.writerow(header)
                 for item in result:
                     writer.writerow([int(num) for num in item.split()])
+            return file_name
+        return ""
 
 
 def get_prefetchtime():
@@ -451,8 +456,12 @@ def main():
         os.mkdir(TEMP_DIR)
 
 
-def collect():
-    print("test")
+def collect(local_registry, insecure_local_registry, image) -> tuple[str, str]:
+    init()
+    cfg = {"registry": local_registry, "insecure_registry": insecure_local_registry, "images": [{"name": image}]}
+    file, ino = MetricsCollector(cfg).start_collet()[0]
+    shutil.rmtree(TEMP_DIR)
+    return file, ino
 
 
 if __name__ == "__main__":

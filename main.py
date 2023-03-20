@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import posixpath
-
 import yaml
 
 import algorithm.prefetch_list as alg
@@ -37,8 +35,8 @@ def main():
     util.clean_nerdctl()
     # collect metrics, get prefetch list , rebuild  image , bench
     for image in cfg["images"]:
-        collect_metrics(cfg, image)
-    # _ = alg.get_prefetch_list('metrics/data/wordpress:nydus/2023-03-18-14:44:55.csv', 'metrics/data/wordpress:nydus/2023-03-18-14:44:55_ino.csv')
+        file, ino = collect_metrics(cfg, image)
+        _ = alg.get_prefetch_list(file, ino)
 
 
 def convert(cfg: dict, image: str):
@@ -49,13 +47,12 @@ def convert(cfg: dict, image: str):
     cvt.convert_nydus(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image)
 
 
-def collect_metrics(cfg: dict, image: str):
+def collect_metrics(cfg: dict, image: str) -> tuple[str, str]:
     """
     collect metrics
     """
     print(cfg)
-    print(posixpath.join(cfg["local_registry"], util.image_repo(image) + "_nydus:" + util.image_tag(image)))
-    metrics.collect()
+    return metrics.collect(cfg["local_registry"], cfg["insecure_local_registry"], util.image_repo(image) + "_nydus:" + util.image_tag(image))
 
 
 if __name__ == "__main__":

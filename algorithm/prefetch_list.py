@@ -1,7 +1,6 @@
 import copy
 import csv
 from functools import cmp_to_key
-from typing import Tuple
 
 
 def read_csv(csv_path: str) -> dict:
@@ -44,7 +43,7 @@ def read_ino_csv(ino_csv_path: str) -> dict:
     return ino_dict
 
 
-def sort_list(csv_path: str) -> Tuple[dict, list]:
+def sort_list(csv_path: str) -> tuple[dict, list]:
     """
     sort access_files
     """
