@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import util
+
+
 def main():
     """
     1. read config file to knows the  images:tag and registry and if we need convert to nydus image or not
@@ -9,7 +12,7 @@ def main():
     5. use the prefetch file list to rebuild the image
     6. bench the oci image use overlayfs,the nydus image without prefetch and the nydus image with prefetch(maybe we need to enable prefetch by change the config.json and restart the snapshotter service)
     """
-    print("test")
+    util.get_nydus_config()
 
 
 if __name__ == "__main__":
