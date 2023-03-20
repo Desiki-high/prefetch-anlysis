@@ -117,6 +117,17 @@ def convert_nydus(source_registry: str, insecure_source_registry: bool, target_r
           image).nydus_convert()
 
 
+def convert_nydus_prefetch(source_registry: str, insecure_source_registry: bool, target_registry: str, insecure_target_registry: bool, image: str, prefetch: str):
+    """
+    convert nydus with prefetch image api
+    """
+    Image(source_registry,
+          insecure_source_registry,
+          target_registry,
+          insecure_target_registry,
+          image, prefetch).nydus_convert()
+
+
 def convert_oci(source_registry: str, insecure_source_registry: bool, target_registry: str, insecure_target_registry: bool, image: str):
     """
     convert oci image api
