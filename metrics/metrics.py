@@ -445,7 +445,7 @@ def main():
             print(inst)
             exit(-1)
     metrics_collector = MetricsCollector(cfg)
-    for i in range(args.times):
+    for _ in range(args.times):
         metrics_collector.start_collet()
         shutil.rmtree(TEMP_DIR)
         os.mkdir(TEMP_DIR)
