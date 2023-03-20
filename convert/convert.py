@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
-import sys
-import yaml
 import os
+import sys
 from argparse import ArgumentParser
+
+import yaml
 
 
 def exit(status):
@@ -12,26 +13,44 @@ def exit(status):
 
 
 class Image:
-    def __init__(self, source_registry, insecure_source_registry, target_registry, insecure_target_registry, image):
+    def __init__(self, source_registry, insecure_source_registry, target_registry, insecure_target_registry, image, prefetch=""):
         self.source_registry = source_registry
         self.insecure_source_registry = insecure_source_registry
         self.target_registry = target_registry
         self.insecure_target_registry = insecure_target_registry
         self.image = image
+        self.prefetch = prefetch
 
-    def image_name(self):
-        return self.image.split(':')[0]
+    def image_repo(self):
+        return self.image.split(":")[0]
+
+    def image_tag(self) -> str:
+        try:
+            return self.image.split(":")[1]
+        except IndexError:
+            return None
 
     def convert_cmd(self):
-        target_image = self.image_name() + ":nydus"
-        if self.insecure_source_registry and self.insecure_target_registry:
-            return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure --target-insecure"
-        elif self.insecure_source_registry:
-            return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure"
-        elif self.insecure_target_registry:
-            return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --target-insecure"
+        if self.prefetch == "":
+            target_image = self.image_repo() + "_nydus:" + self.image_tag()
+            if self.insecure_source_registry and self.insecure_target_registry:
+                return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure --target-insecure"
+            elif self.insecure_source_registry:
+                return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure"
+            elif self.insecure_target_registry:
+                return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --target-insecure"
+            else:
+                return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image}"
         else:
-            return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image}"
+            target_image = self.image_repo() + "_nydus_prefetch:" + self.image_tag()
+            if self.insecure_source_registry and self.insecure_target_registry:
+                return f"cat {self.prefetch} | nydusify convert --prefetch-patterns --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure --target-insecure"
+            elif self.insecure_source_registry:
+                return f"cat {self.prefetch} | nydusify convert --prefetch-patterns --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure"
+            elif self.insecure_target_registry:
+                return f"cat {self.prefetch} | nydusify convert --prefetch-patterns --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --target-insecure"
+            else:
+                return f"cat {self.prefetch} | nydusify convert --prefetch-patterns --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image}"
 
     def convert(self):
         rc = os.system(self.convert_cmd())
