@@ -8,8 +8,10 @@ Before use this tool we should clear local images and containers.
 Please run this tool in root
 
 ### Run main.py
-workdir /path/to
+```shell
+# workdir /path/to
 ./main.py
+```
 
 ### Run convert.py and metrics.py
 
