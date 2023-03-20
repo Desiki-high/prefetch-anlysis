@@ -2,6 +2,7 @@
 
 import yaml
 
+import algorithm.prefetch_list
 import util
 
 CONFIG = "config.yaml"
@@ -25,6 +26,8 @@ def main():
             print(inst)
             exit(-1)
     print(cfg)
+    optimized_list = algorithm.prefetch_list.get_prefetch_list('metrics/data/wordpress:nydus/2023-03-18-14:44:55.csv', 'metrics/data/wordpress:nydus/2023-03-18-14:44:55_ino.csv')
+    print(optimized_list)
 
 
 if __name__ == "__main__":

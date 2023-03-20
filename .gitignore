@@ -11,3 +11,5 @@
 **/metrics/data
 **/metrics/log
 **/convert/tmp
+
+**/out.txt
