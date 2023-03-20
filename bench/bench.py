@@ -773,6 +773,14 @@ def main():
     f.close()
 
 
+def bench_oci():
+    pass
+
+
+def bench_nydus():
+    pass
+
+
 if __name__ == "__main__":
     main()
     exit(0)

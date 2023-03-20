@@ -3,6 +3,7 @@
 import yaml
 
 import algorithm.prefetch_list as alg
+import bench.bench as bench
 import convert.convert as cvt
 import metrics.metrics as metrics
 import util
@@ -41,6 +42,7 @@ def main():
         # rebuild
         cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
         # bench
+        start_bench(cfg, image)
 
 
 def convert(cfg: dict, image: str):
@@ -57,6 +59,14 @@ def collect_metrics(cfg: dict, image: str) -> tuple[str, str]:
     """
     print(cfg)
     return metrics.collect(cfg["local_registry"], cfg["insecure_local_registry"], util.image_repo(image) + "_nydus:" + util.image_tag(image))
+
+
+def start_bench(cfg: dict, image: str):
+    """
+    bench oci, nydus without prefetch, nydus with all prefetch, nydus witch alg prefetch
+    """
+    bench.bench_oci()
+    bench.bench_nydus()
 
 
 if __name__ == "__main__":
