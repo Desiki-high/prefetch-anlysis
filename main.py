@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from typing import Tuple
 import yaml
 
 import algorithm.prefetch_list as alg
@@ -51,7 +52,7 @@ def convert(cfg: dict, image: str):
     cvt.convert_nydus(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image)
 
 
-def collect_metrics(cfg: dict, image: str) -> tuple[str, str]:
+def collect_metrics(cfg: dict, image: str) -> Tuple[str, str]:
     """
     collect metrics
     """

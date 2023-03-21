@@ -14,6 +14,7 @@ import subprocess
 import sys
 import time
 from argparse import ArgumentParser
+from typing import Tuple
 
 import yaml
 
@@ -39,7 +40,7 @@ class MetricsCollector:
         self.insecure_registry = cfg["insecure_registry"]
         self.images = cfg["images"]
 
-    def start_collet(self) -> list[tuple[str, str]]:
+    def start_collet(self) -> "list[Tuple[str, str]]":
         files = []
         for i in range(len(self.images)):
             logging.info(self.images[i]["name"] + " metrics collect start")
@@ -49,7 +50,7 @@ class MetricsCollector:
                 files.append(self.run(self.images[i]["name"], arg=self.images[i]["arg"]))
         return files
 
-    def run(self, repo: str, arg="") -> tuple[str, str]:
+    def run(self, repo: str, arg="") -> Tuple[str, str]:
         image_ref = self.image_ref(repo)
         container_name = repo.replace(":", "-") + random_string()
         pull_cmd = self.pull_cmd(image_ref)
@@ -108,7 +109,7 @@ class MetricsCollector:
         assert rc == 0
 
 #  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间以启动时间为预取开始时间存在时间误差
-    def collect(self, repo) -> tuple[str, str]:
+    def collect(self, repo) -> Tuple[str, str]:
         """
             waiting 60s for the container read file from the backend
             then collect the metrics
@@ -453,7 +454,7 @@ def main():
         os.mkdir(TEMP_DIR)
 
 
-def collect(local_registry, insecure_local_registry, image) -> tuple[str, str]:
+def collect(local_registry, insecure_local_registry, image) -> Tuple[str, str]:
     init()
     cfg = {"registry": local_registry, "insecure_registry": insecure_local_registry, "images": [{"name": image}]}
     file, ino = MetricsCollector(cfg).start_collet()[0]
