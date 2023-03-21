@@ -14,12 +14,12 @@ Please run this tool in root
 ```
 
 the result like:
-| timestamp     | registry                     | repo                            | pull_elapsed(s) | create_elapsed(s) | run_elapsed(s) | total_elapsed(s) |
-|---------------|------------------------------|---------------------------------|-----------------|-------------------|----------------|------------------|
-| 1679369853801 | dockerhub.kubekey.local/dfns | alpine:3.17.2                   | 6.48            | 0.33              | 0.42           | 7.23             |
-| 1679369858182 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus             | 2.14            | 2.44              | 1.55           | 6.13             |
-| 1679369864362 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus_prefetchall | 2.07            | 3.88              | 0.47           | 6.42             |
-| 1679369868065 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus_prefetch    | 2.11            | 1.67              | 0.7            | 4.48             |
+| timestamp     | registry                     | repo                               | pull_elapsed(s) | create_elapsed(s) | run_elapsed(s) | total_elapsed(s) |
+|---------------|------------------------------|------------------------------------|-----------------|-------------------|----------------|------------------|
+| 1679371823127 | dockerhub.kubekey.local/dfns | wordpress:php8.2                   | 90.887442       | 0.394524          | 47.677036      | 138.959002       |
+| 1679371930441 | dockerhub.kubekey.local/dfns | wordpress:php8.2_nydus             | 2.707250        | 1.470760          | 102.411740     | 106.589750       |
+| 1679372111961 | dockerhub.kubekey.local/dfns | wordpress:php8.2_nydus_prefetchall | 3.341576        | 2.979142          | 175.128998     | 181.449716       |
+| 1679372205407 | dockerhub.kubekey.local/dfns | wordpress:php8.2_nydus_prefetch    | 2.879120        | 1.913718          | 88.187928      | 92.980766        |
 
 
 we do four bench for each oci image,the first is oci bech,the second is the nydus without prefetch bench, the third is nydus witch prefech all bench, the latest is nydus prefetch with algorithm bench
