@@ -13,6 +13,16 @@ Please run this tool in root
 ./main.py
 ```
 
+the result like:
+| timestamp     | registry                     | repo                            | pull_elapsed(s) | create_elapsed(s) | run_elapsed(s) | total_elapsed(s) |
+|---------------|------------------------------|---------------------------------|-----------------|-------------------|----------------|------------------|
+| 1679369853801 | dockerhub.kubekey.local/dfns | alpine:3.17.2                   | 6.48            | 0.33              | 0.42           | 7.23             |
+| 1679369858182 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus             | 2.14            | 2.44              | 1.55           | 6.13             |
+| 1679369864362 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus_prefetchall | 2.07            | 3.88              | 0.47           | 6.42             |
+| 1679369868065 | dockerhub.kubekey.local/dfns | alpine:3.17.2_nydus_prefetch    | 2.11            | 1.67              | 0.7            | 4.48             |
+
+
+we do four bench for each oci image,the first is oci bech,the second is the nydus without prefetch bench, the third is nydus witch prefech all bench, the latest is nydus prefetch with algorithm bench
 ### Run convert.py and metrics.py
 
 ```shell
