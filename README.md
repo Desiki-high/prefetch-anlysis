@@ -21,6 +21,7 @@ Please run this tool in root
 | 1679372111961 | dockerhub.kubekey.local/dfns | wordpress:php8.2_nydus_prefetchall | 3.341576        | 2.979142          | 175.128998     | 181.449716       |
 | 1679372205407 | dockerhub.kubekey.local/dfns | wordpress:php8.2_nydus_prefetch    | 2.879120        | 1.913718          | 88.187928      | 92.980766        |
 
+![](./bench.png)
 
 four benchs for image,the first is oci bech,the second is the nydus without prefetch bench, the third is nydus witch prefech all bench, the latest is nydus prefetch with algorithm bench
 ### Run convert.py and metrics.py
