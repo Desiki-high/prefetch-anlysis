@@ -29,9 +29,9 @@ def get_nydus_config() -> dict:
     return config
 
 
-def change_config_prefetch_enable():
+def switch_config_prefetch_enable():
     """
-    change the fs_prefetch.enable status
+    switch the fs_prefetch.enable status
     """
     config = get_nydus_config()
     config["fs_prefetch"]["enable"] = not config["fs_prefetch"]["enable"]
@@ -39,15 +39,25 @@ def change_config_prefetch_enable():
         json.dump(config, f, ensure_ascii=False, indent=4)
 
 
+def reload_nydus():
+    rc = os.system("systemctl restart nydus-snapshotter.service")
+    assert rc == 0
+    rc = os.system("systemctl restart containerd.service")
+    assert rc == 0
+
+
 def clean_env():
     clean_nerdctl()
     rc = os.system("systemctl stop nydus-snapshotter.service")
+    assert rc == 0
     rc = os.system("systemctl stop containerd.service")
+    assert rc == 0
     shutil.rmtree(NYDUS_DIR)
     shutil.rmtree(CONTAINRD_DIR)
     shutil.rmtree(NYDUS_RUN_DIR)
     shutil.rmtree(CONTAINRD_RUN_DIR)
     rc = os.system("systemctl start nydus-snapshotter.service")
+    assert rc == 0
     rc = os.system("systemctl start containerd.service")
     assert rc == 0
 

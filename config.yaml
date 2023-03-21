@@ -4,4 +4,4 @@ local_registry: dockerhub.kubekey.local/dfns
 insecure_local_registry: True
 convert: False
 images:
- - wordpress:php8.2
+ - alpine:3.17.2

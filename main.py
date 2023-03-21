@@ -33,7 +33,7 @@ def main():
     for image in cfg["images"]:
         if cfg["convert"]:
             convert(cfg, image)
-    util.clean_nerdctl()
+        util.clean_env()
     for image in cfg["images"]:
         file, ino = collect_metrics(cfg, image)
         _ = alg.get_prefetch_list(file, ino)
@@ -64,9 +64,19 @@ def start_bench(cfg: dict, image: str):
     csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
     f.writelines(csv_headers + "\n")
     f.flush()
+    # oci
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], image, f)
+    # no prefetch
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus")
+    # TODO: change prefetch enable and bench
+    util.switch_config_prefetch_enable()
+    util.reload_nydus()
+    # prefetch all
+    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus", False)
+    # prefetch list
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_prefetch(image), f, "nydus")
+    util.switch_config_prefetch_enable()
+    util.reload_nydus()
 
 
 if __name__ == "__main__":

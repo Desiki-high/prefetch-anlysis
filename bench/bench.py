@@ -774,7 +774,7 @@ def main():
     f.close()
 
 
-def bench_image(local_registry, insecure_local_registry, image, f: TextIOWrapper, snapshotter="overlayfs"):
+def bench_image(local_registry, insecure_local_registry, image, f: TextIOWrapper, snapshotter="overlayfs", flag=True):
     try:
         bench = copy.deepcopy(BenchRunner.ALL[image_repo(image)])
         tag = image_tag(image)
@@ -795,7 +795,10 @@ def bench_image(local_registry, insecure_local_registry, image, f: TextIOWrapper
     pull_elapsed = f"{pull_elapsed: .6f}"
     create_elapsed = f"{create_elapsed: .6f}"
     run_elapsed = f"{run_elapsed: .6f}"
-    line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+    if flag:
+        line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+    else:
+        line = f"{timetamp},{runner.registry[:-1]},{bench.name}_prefetchall,{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
     f.writelines(line + "\n")
     f.flush()
 

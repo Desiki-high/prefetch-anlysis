@@ -1,4 +1,5 @@
 timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)
-1679368814114,dockerhub.kubekey.local/dfns,alpine:3.17.2, 1.539890, 0.259726, 0.492298, 2.291914
-1679368817574,dockerhub.kubekey.local/dfns,alpine:3.17.2_nydus, 2.300290, 1.013966, 0.984000, 4.298256
-1679368821018,dockerhub.kubekey.local/dfns,alpine:3.17.2_nydus_prefetch, 2.307220, 1.954152, 0.946302, 5.207674
+1679369853801,dockerhub.kubekey.local/dfns,alpine:3.17.2, 3.198524, 0.107648, 0.315410, 3.621582
+1679369858182,dockerhub.kubekey.local/dfns,alpine:3.17.2_nydus, 2.094516, 1.574546, 1.393424, 5.062486
+1679369864362,dockerhub.kubekey.local/dfns,alpine:3.17.2_nydus_prefetchall, 2.078656, 4.191922, 0.345434, 6.616012
+1679369868065,dockerhub.kubekey.local/dfns,alpine:3.17.2_nydus_prefetch, 2.115302, 1.737022, 0.913886, 4.766210
