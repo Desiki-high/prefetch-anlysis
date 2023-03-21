@@ -5,6 +5,7 @@ import yaml
 import algorithm.prefetch_list as alg
 import bench.bench as bench
 import convert.convert as cvt
+import draw
 import metrics.metrics as metrics
 import util
 
@@ -39,6 +40,7 @@ def main():
         _ = alg.get_prefetch_list(file, ino)
         cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
         start_bench(cfg, image)
+        draw.draw("bench.csv", util.image_repo(image) + ".png")
 
 
 def convert(cfg: dict, image: str):
