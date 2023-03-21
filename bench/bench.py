@@ -16,6 +16,7 @@ import urllib.request
 from argparse import ArgumentParser
 from contextlib import contextmanager
 from datetime import datetime
+from io import TextIOWrapper
 
 TMP_DIR = tempfile.mkdtemp()
 
@@ -738,7 +739,7 @@ def main():
     )
 
     if output_format == "csv":
-        csv_headers = "timestamp,repo,bench,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
+        csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
         f.writelines(csv_headers + "\n")
         f.flush()
 
@@ -755,7 +756,7 @@ def main():
             if output_format == "json":
                 row = {
                     "timestamp": timetamp,
-                    "registry": args.registry,
+                    "registry": runner.registry[:-1],
                     "repo": bench.name,
                     "pull_elapsed": pull_elapsed,
                     "create_elapsed": create_elapsed,
@@ -764,7 +765,7 @@ def main():
                 }
                 line = json.dumps(row)
             elif output_format == "csv":
-                line = f"{timetamp},{bench.repo},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+                line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
 
             print(line)
             f.writelines(line + "\n")
@@ -773,12 +774,30 @@ def main():
     f.close()
 
 
-def bench_oci():
-    pass
-
-
-def bench_nydus():
-    pass
+def bench_image(local_registry, insecure_local_registry, image, f: TextIOWrapper, snapshotter="overlayfs"):
+    try:
+        bench = copy.deepcopy(BenchRunner.ALL[image_repo(image)])
+        tag = image_tag(image)
+        if tag is not None:
+            bench.set_tag(tag)
+    except KeyError:
+        logging.warning("image %s not supported, skip", image)
+        exit(1)
+    runner = BenchRunner(
+        registry=local_registry,
+        snapshotter=snapshotter,
+        cleanup=True,
+        insecure_registry=insecure_local_registry,
+    )
+    pull_elapsed, create_elapsed, run_elapsed = runner.run(bench)
+    total_elapsed = f"{pull_elapsed + create_elapsed + run_elapsed: .6f}"
+    timetamp = int(time.time() * 1000)
+    pull_elapsed = f"{pull_elapsed: .6f}"
+    create_elapsed = f"{create_elapsed: .6f}"
+    run_elapsed = f"{run_elapsed: .6f}"
+    line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+    f.writelines(line + "\n")
+    f.flush()
 
 
 if __name__ == "__main__":

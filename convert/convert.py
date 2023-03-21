@@ -35,7 +35,7 @@ class Image:
 
     def convert_cmd(self):
         if self.prefetch == "":
-            target_image = self.image_repo() + "_nydus:" + self.image_tag()
+            target_image = self.image_repo() + ":" + self.image_tag() + "_nydus"
             if self.insecure_source_registry and self.insecure_target_registry:
                 return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure --target-insecure"
             elif self.insecure_source_registry:
@@ -45,7 +45,7 @@ class Image:
             else:
                 return f"nydusify convert --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image}"
         else:
-            target_image = self.image_repo() + "_nydus_prefetch:" + self.image_tag()
+            target_image = self.image_repo() + ":" + self.image_tag() + "_nydus_prefetch"
             if self.insecure_source_registry and self.insecure_target_registry:
                 return f"cat {self.prefetch} | nydusify convert --prefetch-patterns --source {self.source_registry}/{self.image} --target {self.target_registry}/{target_image} --source-insecure --target-insecure"
             elif self.insecure_source_registry:

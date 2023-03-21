@@ -35,13 +35,9 @@ def main():
             convert(cfg, image)
     util.clean_nerdctl()
     for image in cfg["images"]:
-        # collect metrics
         file, ino = collect_metrics(cfg, image)
-        # get prefetch list
         _ = alg.get_prefetch_list(file, ino)
-        # rebuild
         cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
-        # bench
         start_bench(cfg, image)
 
 
@@ -57,16 +53,20 @@ def collect_metrics(cfg: dict, image: str) -> tuple[str, str]:
     """
     collect metrics
     """
-    print(cfg)
-    return metrics.collect(cfg["local_registry"], cfg["insecure_local_registry"], util.image_repo(image) + "_nydus:" + util.image_tag(image))
+    return metrics.collect(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image))
 
 
 def start_bench(cfg: dict, image: str):
     """
     bench oci, nydus without prefetch, nydus with all prefetch, nydus witch alg prefetch
     """
-    bench.bench_oci()
-    bench.bench_nydus()
+    f = open("bench.csv", "w")
+    csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
+    f.writelines(csv_headers + "\n")
+    f.flush()
+    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], image, f)
+    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus")
+    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_prefetch(image), f, "nydus")
 
 
 if __name__ == "__main__":

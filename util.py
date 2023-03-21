@@ -61,3 +61,11 @@ def image_tag(ref: str) -> str:
         return ref.split(":")[1]
     except IndexError:
         return None
+
+
+def image_nydus(ref: str):
+    return image_repo(ref) + ":" + image_tag(ref) + "_nydus"
+
+
+def image_nydus_prefetch(ref: str) -> str:
+    return image_repo(ref) + ":" + image_tag(ref) + "_nydus_prefetch"

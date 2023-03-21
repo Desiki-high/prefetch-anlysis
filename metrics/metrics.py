@@ -113,7 +113,7 @@ class MetricsCollector:
             waiting 60s for the container read file from the backend
             then collect the metrics
         """
-        time.sleep(60)
+        time.sleep(10)
         socket = search_file(API_DIR, "api.sock")
         if socket == None:
             print("can't find the api.sock")
