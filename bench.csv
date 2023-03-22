@@ -1,5 +1,5 @@
 timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)
-1679371823127,dockerhub.kubekey.local/dfns,wordpress:php8.2, 90.887442, 0.394524, 47.677036, 138.959002
-1679371930441,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus, 2.707250, 1.470760, 102.411740, 106.589750
-1679372111961,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus_prefetchall, 3.341576, 2.979142, 175.128998, 181.449716
-1679372205407,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus_prefetch, 2.879120, 1.913718, 88.187928, 92.980766
+1679448188882,dockerhub.kubekey.local/dfns,wordpress:php8.2, 73.483700, 0.260872, 48.762206, 122.506778
+1679448308586,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus, 3.678994, 2.938472, 113.455829, 120.073295
+1679448485672,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus_prefetchall, 2.477336, 10.460972, 163.056714, 175.995022
+1679448578664,dockerhub.kubekey.local/dfns,wordpress:php8.2_nydus_prefetch, 2.347748, 3.583408, 86.645820, 92.576976
