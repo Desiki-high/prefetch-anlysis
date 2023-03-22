@@ -38,10 +38,15 @@ def main():
             convert(cfg, image)
         util.clean_env()
     for image in cfg["images"]:
+        # collect metrics data
         file, ino = collect_metrics(cfg, image)
+        # generate prefetch list
         _ = alg.get_prefetch_list(file, ino)
+        # rebuild
         cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
+        # bench
         start_bench(cfg, image)
+        # draw bench result
         draw.draw(util.image_repo(image) + ".csv", util.image_repo(image) + ".png")
 
 
