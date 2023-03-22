@@ -1,5 +1,7 @@
 # Prefetch Acceleration
-Work in nydus v2.2.0
+Work on:
+nydus-snapshotter commit 2ee4efdbef
+nydusd, nydus-image, nydusctl, nydusify commit c202e918d4
 
 
 ## Getting started
