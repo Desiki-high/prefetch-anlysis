@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from typing import Tuple
+
 import yaml
 
 import algorithm.prefetch_list as alg
@@ -41,7 +42,7 @@ def main():
         _ = alg.get_prefetch_list(file, ino)
         cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
         start_bench(cfg, image)
-        draw.draw("bench.csv", util.image_repo(image) + ".png")
+        draw.draw(util.image_repo(image) + ".csv", util.image_repo(image) + ".png")
 
 
 def convert(cfg: dict, image: str):
@@ -63,7 +64,7 @@ def start_bench(cfg: dict, image: str):
     """
     bench oci, nydus without prefetch, nydus with all prefetch, nydus witch alg prefetch
     """
-    f = open("bench.csv", "w")
+    f = open(util.image_repo(image) + ".csv", "w")
     csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
     f.writelines(csv_headers + "\n")
     f.flush()
