@@ -77,7 +77,6 @@ def start_bench(cfg: dict, image: str):
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], image, f)
     # no prefetch
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus")
-    # TODO: change prefetch enable and bench
     util.switch_config_prefetch_enable()
     util.reload_nydus()
     # prefetch all
