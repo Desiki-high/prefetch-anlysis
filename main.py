@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import shutil
 from typing import Tuple
 
 import yaml
@@ -11,6 +12,9 @@ import draw
 import metrics.metrics as metrics
 import util
 
+DATA_DIR = "data"
+LOG_DIR = "log"
+TEMP_DIR = "tmp"
 CONFIG = "config.yaml"
 PREFETCH_FILE_LIST = "algorithm/out.txt"
 
@@ -90,3 +94,6 @@ def start_bench(cfg: dict, image: str):
 if __name__ == "__main__":
     util.clean_env()
     main()
+    shutil.rmtree(TEMP_DIR)
+    shutil.rmtree(DATA_DIR)
+    shutil.rmtree(LOG_DIR)
