@@ -69,12 +69,12 @@ def optimize_list(csv_path: str, ino_csv_path: str) -> list:
     ino_dict = read_ino_csv(ino_csv_path)
     time = 0
     final = copy.deepcopy(file_list)
-    for i in file_list:
-        if file_dict[i]['first_access_time'] > time + ino_dict[file_dict[i]['ino']]['latency'] \
-                and ino_dict[file_dict[i]['ino']]['size'] / file_dict[i]['file_size'] > 0.5:
-            time += ino_dict[file_dict[i]['ino']]['latency']
-        else:
-            final.remove(i)
+    # for i in file_list:
+    #     if file_dict[i]['first_access_time'] > time + ino_dict[file_dict[i]['ino']]['latency'] \
+    #             and ino_dict[file_dict[i]['ino']]['size'] / file_dict[i]['file_size'] > 0.5:
+    #         time += ino_dict[file_dict[i]['ino']]['latency']
+    #     else:
+    #         final.remove(i)
     return final
 
 
