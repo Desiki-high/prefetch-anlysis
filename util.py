@@ -52,10 +52,14 @@ def clean_env():
     assert rc == 0
     rc = os.system("systemctl stop containerd.service")
     assert rc == 0
-    shutil.rmtree(NYDUS_DIR)
-    shutil.rmtree(CONTAINRD_DIR)
-    shutil.rmtree(NYDUS_RUN_DIR)
-    shutil.rmtree(CONTAINRD_RUN_DIR)
+    if os.path.exists(NYDUS_RUN_DIR):
+        shutil.rmtree(NYDUS_RUN_DIR)
+    if os.path.exists(NYDUS_DIR):
+        shutil.rmtree(NYDUS_DIR)
+    if os.path.exists(CONTAINRD_DIR):
+        shutil.rmtree(CONTAINRD_DIR)
+    if os.path.exists(CONTAINRD_RUN_DIR):
+        shutil.rmtree(CONTAINRD_RUN_DIR)
     rc = os.system("systemctl start nydus-snapshotter.service")
     assert rc == 0
     rc = os.system("systemctl start containerd.service")

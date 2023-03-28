@@ -43,7 +43,7 @@ def draw(filename_path, dest_path="bench.png"):
     for a, b in zip(data["repo"], data["total_elapsed(s)"]):
         plt.text(a, b, f'{b:.3f}', ha='center', va='bottom', fontsize=12)
 
-    plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.9)
+    plt.subplots_adjust(left=0.1, bottom=0.1, right=0.9, top=0.85)
 
     lines, labels = axes.get_legend_handles_labels()
     fig.legend(lines, labels, loc='upper right', fontsize=14)
