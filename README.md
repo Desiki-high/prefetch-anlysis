@@ -6,7 +6,7 @@ nydusd, nydus-image, nydusctl, nydusify commit c202e918d4
 we have some hack changes:
 * prefetch_begin info : 
 ```rs
-// in rafs/src/fs.rs:176 in pub fn import() of Rafs
+// in image-service/rafs/src/fs.rs:176 in pub fn import() of Rafs
   info!(
       "prefetch_begin:{}",
       SystemTime::now()
@@ -17,7 +17,7 @@ we have some hack changes:
 ```
 * ino info: 
 ```rs
-// in rafs/src/fs.rs:672 in pub fn read() of Rafs
+// in image-service/rafs/src/fs.rs:672 in pub fn read() of Rafs
   let latency = start.unwrap().elapsed().unwrap().as_micros();
   log::info!(
       "metrics: {} {} {} {} {}",
@@ -31,6 +31,29 @@ we have some hack changes:
           .as_micros()
   );
 ```
+
+* ino info: 
+```rs
+// in image-service/rafs/src/fs.rs:672 in pub fn read() of Rafs
+  let latency = start.unwrap().elapsed().unwrap().as_micros();
+  log::info!(
+      "metrics: {} {} {} {} {}",
+      ino,
+      offset,
+      size,
+      latency,
+      SystemTime::now()
+          .duration_since(UNIX_EPOCH)
+          .unwrap()
+          .as_micros()
+  );
+```
+```golang
+* nydus-snapshotter config: 
+// in image-service/config/daemonconfig/fuse.go:31 in type FuseDaemonConfig struct {
+  AmplifyIo       int `json:"amplify_io"`
+```
+
 And you'd better to set the default fuse threads as 1, in src/bin/nydusd/main.rs:115
 
 ## Getting started
