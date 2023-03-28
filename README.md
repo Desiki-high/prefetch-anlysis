@@ -31,25 +31,8 @@ we have some hack changes:
           .as_micros()
   );
 ```
-
-* ino info: 
-```rs
-// in image-service/rafs/src/fs.rs:672 in pub fn read() of Rafs
-  let latency = start.unwrap().elapsed().unwrap().as_micros();
-  log::info!(
-      "metrics: {} {} {} {} {}",
-      ino,
-      offset,
-      size,
-      latency,
-      SystemTime::now()
-          .duration_since(UNIX_EPOCH)
-          .unwrap()
-          .as_micros()
-  );
-```
-```golang
 * nydus-snapshotter config: 
+```golang
 // in image-service/config/daemonconfig/fuse.go:31 in type FuseDaemonConfig struct {
   AmplifyIo       int `json:"amplify_io"`
 ```
