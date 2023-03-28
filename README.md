@@ -33,7 +33,7 @@ we have some hack changes:
 ```
 * nydus-snapshotter config: 
 ```golang
-// in image-service/config/daemonconfig/fuse.go:31 in type FuseDaemonConfig struct {
+// in nydus-snapshotter/config/daemonconfig/fuse.go:31 in type FuseDaemonConfig struct {
   AmplifyIo       int `json:"amplify_io"`
 ```
 
