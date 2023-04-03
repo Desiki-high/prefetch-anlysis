@@ -32,7 +32,7 @@ def main():
     data = df['c_file_size'].value_counts().reindex(order)
 
     plt.bar(data.index, data.values)
-    plt.savefig("test.png")
+    plt.savefig("file_size.png")
 
 
 if __name__ == "__main__":
