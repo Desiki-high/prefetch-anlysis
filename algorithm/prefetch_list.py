@@ -192,7 +192,7 @@ def get_prefetch_list(csv_path: str, ino_csv_path: str) -> list:
     # optimized_list = optimize_list3(csv_path, ino_csv_path)
     optimized_list = optimize_list4(csv_path, ino_csv_path)
     # optimized_list = optimize_list5(csv_path, ino_csv_path)
-    to_txt(optimized_list, '/root/project/prefetch-acceleration/algorithm/out.txt')
+    to_txt(optimized_list, 'algorithm/out.txt')
     return optimized_list
 
 
