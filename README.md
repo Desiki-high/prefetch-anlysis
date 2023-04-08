@@ -1,7 +1,7 @@
 # Prefetch Acceleration
 Work on:
 nydus-snapshotter commit 2ee4efdbef
-nydusd, nydus-image, nydusctl, nydusify commit c202e918d4
+nydusd, nydus-image, nydusify commit c202e918d4
 
 we have some hack changes:
 * prefetch_begin info : 
