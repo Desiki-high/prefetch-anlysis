@@ -1,44 +1,4 @@
 # Prefetch Acceleration
-Work on:
-nydus-snapshotter commit 2f1d2fa66
-nydusd, nydus-image, nydusify commit 902fd7181
-
-we have some hack changes:
-* prefetch_begin info : 
-```rs
-// in image-service/rafs/src/fs.rs:176 in pub fn import() of Rafs
-  info!(
-      "prefetch_begin:{}",
-      SystemTime::now()
-          .duration_since(UNIX_EPOCH)
-          .unwrap()
-          .as_micros()
-  );
-```
-* ino info: 
-```rs
-// in image-service/rafs/src/fs.rs:672 in pub fn read() of Rafs
-  let latency = start.unwrap().elapsed().unwrap().as_micros();
-  log::info!(
-      "metrics: {} {} {} {} {}",
-      ino,
-      offset,
-      size,
-      latency,
-      SystemTime::now()
-          .duration_since(UNIX_EPOCH)
-          .unwrap()
-          .as_micros()
-  );
-```
-* nydus-snapshotter config: 
-```golang
-// in nydus-snapshotter/config/daemonconfig/fuse.go:31 in type FuseDaemonConfig struct {
-  AmplifyIo       int `json:"amplify_io"`
-```
-
-And you'd better to set the default fuse threads as 1, in src/bin/nydusd/main.rs:115
-
 ## Getting started
 Please ensure your `nerdctl` is beyond v0.22 and set the containerd environment for nydus.
 Before use this tool we should clear local images and containers.

@@ -40,7 +40,7 @@ class MetricsCollector:
         self.insecure_registry = cfg["insecure_registry"]
         self.images = cfg["images"]
 
-    def start_collet(self) -> "list[Tuple[str, str]]":
+    def start_collet(self) -> list[str]:
         files = []
         for i in range(len(self.images)):
             logging.info(self.images[i]["name"] + " metrics collect start")
@@ -68,9 +68,9 @@ class MetricsCollector:
         print("Running container %s ..." % container_name)
         rc = os.system(run_cmd)
         assert rc == 0
-        file, ino = self.collect(repo)
+        file = self.collect(repo)
         self.clean_up(image_ref, container_name)
-        return file, ino
+        return file
 
     def image_ref(self, repo):
         return posixpath.join(self.registry, repo)
@@ -108,8 +108,7 @@ class MetricsCollector:
         rc = os.system(cmd)
         assert rc == 0
 
-#  问题一：这里的相对时间有问题，在关闭预取的情况下测试无法拿到预取的开始时间以启动时间为预取开始时间存在时间误差
-    def collect(self, repo) -> Tuple[str, str]:
+    def collect(self, repo) -> str:
         """
             waiting 60s for the container read file from the backend
             then collect the metrics
@@ -124,17 +123,12 @@ class MetricsCollector:
             print("can't find the bootstrap")
             exit(1)
 
-        # prefetch
-        # prefetch = get_prefetch(socket)
-
         # bootstrap
         bootstap_data = check_bootstrap(bootstrap)
 
         # access_pattern
         access_pattern = get_access_pattern(socket, bootstap_data)
-
-        header = ["file_path", "ino", "first_access_time",
-                  "access_times", "file_size"]
+        header = ["file_path", "first_access_time", "file_size"]
 
         file_name = posixpath.join(DATA_DIR, repo, datetime.datetime.now().strftime(
             '%Y-%m-%d-%H:%M:%S') + ".csv")
@@ -146,83 +140,8 @@ class MetricsCollector:
             writer.writerow(header)
             for item in access_pattern:
                 writer.writerow(
-                    [item.file_path, item.ino, item.first_access_time_secs * 10**6 + item.first_access_time_micros,
-                     item.access_times, item.file_size])
-        return file_name, self.colletc_ino(repo)
-
-#  问题二：依赖于埋点日志 log::info!() 需要转换为metrics 从接口拿数据更为合理
-    def colletc_ino(self, repo) -> str:
-        file_path = search_file(NYDUS_LOG_DIR, LOG_FILE)
-        result = []
-        if file_path != None:
-            with open(file_path) as file:
-                result = re.findall(r"\d+\s+\d+\s+\d+\s+\d+\s+\d+$", file.read(), re.MULTILINE)
-            header = ["ino", "offset", "size", "latency", "ino_access_time"]
-            file_name = posixpath.join(DATA_DIR, repo, datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')+"_ino" + ".csv")
-            if not os.path.exists(file_name):
-                os.makedirs(posixpath.join(DATA_DIR, repo), exist_ok=True)
-                os.mknod(file_name)
-            with open(file_name, 'w', newline='') as f:
-                writer = csv.writer(f)
-                writer.writerow(header)
-                for item in result:
-                    writer.writerow([int(num) for num in item.split()])
-            return file_name
-        return ""
-
-
-def get_prefetchtime():
-    """
-    get prefetchtime from log(hack)
-    """
-    file_path = search_file(NYDUS_LOG_DIR, LOG_FILE)
-    result = []
-    if file_path != None:
-        with open(file_path) as file:
-            for line in file:
-                if line.find("prefetch_begin") != -1:
-                    result = re.search(r'prefetch_begin:(\d+)$', line)
-                    return int(result.group(1))
-    return None
-
-# class BackendLatency:
-#     def __init__(self, latencys):
-#         self.blcok_interval = ["<1K", "1K~", "4K~",
-#                                "16K~", "64K~", "128K~", "512K~", "1M~"]
-#         self.latencys = latencys
-
-
-# def get_backend(sock):
-#     """
-#     get the backend metrics from the sock
-#     """
-#     contents = ""
-#     with open(send_request(sock, BACKEND_METRICS), 'r') as file:
-#         contents = file.read()
-#     resp = json.loads(contents)
-#     backend_latency = BackendLatency(
-#         resp["read_cumulative_latency_millis_dist"])
-#     return backend_latency
-
-
-# def get_latency(backend_latency, file_size):
-#     file_size = int(file_size)
-#     if file_size < 1024:
-#         return backend_latency.latencys[0]
-#     elif 1024 <= file_size < 4096:
-#         return backend_latency.latencys[1]
-#     elif 4096 <= file_size < 16384:
-#         return backend_latency.latencys[2]
-#     elif 16384 <= file_size < 65536:
-#         return backend_latency.latencys[3]
-#     elif 65536 <= file_size < 131072:
-#         return backend_latency.latencys[4]
-#     elif 131072 <= file_size < 524288:
-#         return backend_latency.latencys[5]
-#     elif 524288 <= file_size < 1048576:
-#         return backend_latency.latencys[6]
-#     else:
-#         return backend_latency.latencys[7]
+                    [item.file_path, item.first_access_time_secs * 10**9 + item.first_access_time_nanos, item.file_size])
+        return file_name
 
 
 def get_file_by_bootstrap(bootstrap, inode):
@@ -259,22 +178,11 @@ def check_bootstrap(bootstrap):
 
 
 class AccessPattern:
-    def __init__(self, file_path, ino, access_times, first_access_time_secs, first_access_time_micros, file_size):
+    def __init__(self, file_path, first_access_time_secs, first_access_time_nanos, file_size):
         self.file_path = file_path
-        self.ino = ino
-        self.access_times = access_times
-        # the access_time is relative to the time of prefetch begin
         self.first_access_time_secs = first_access_time_secs
-        self.first_access_time_micros = first_access_time_micros
+        self.first_access_time_nanos = first_access_time_nanos
         self.file_size = file_size
-
-    def show(self):
-        print("file_path: ", self.file_path)
-        print("access_times: ", self.access_times)
-        print("first_access_time_secs: ", self.first_access_time_secs)
-        print("first_access_time_millis: ", self.first_access_time_millis)
-        print("file_size: ", self.file_size)
-        print("latency: ", self.latency)
 
 
 def get_access_pattern(sock, bootstap_data):
@@ -282,56 +190,17 @@ def get_access_pattern(sock, bootstap_data):
     get the file access pattern from the sock
     """
     contents = ""
+    # The api occasionally returns incomplete information
     while contents.endswith("]") == False:
         with open(send_request(sock, ACCESS_PATTERN_METRICS), 'r') as file:
             contents = file.read()
     resp = json.loads(contents)
     access_pattern_list = []
-    prefetch_begin_time = get_prefetchtime()
     for item in resp:
-        item['first_access_time_secs'] = item['first_access_time_secs'] - prefetch_begin_time // 1000000
-        item["first_access_time_nanos"] = item["first_access_time_nanos"] // 1000 - (prefetch_begin_time % 1000)
-        if item["first_access_time_nanos"] < 0:
-            item["first_access_time_nanos"] += 1000000
-            item['first_access_time_secs'] -= 1
         file_path, file_size = get_file_by_bootstrap(bootstap_data, item['ino'])
         access_pattern_list.append(AccessPattern(
-            file_path, item['ino'], item['nr_read'], item['first_access_time_secs'], item['first_access_time_nanos'], file_size))
+            file_path, item['first_access_time_secs'], item['first_access_time_nanos'], file_size))
     return access_pattern_list
-
-
-class Prefetch:
-    def __init__(self, prefetch_begin_time_secs, prefetch_begin_time_millis):
-        self.prefetch_begin_time_secs = prefetch_begin_time_secs
-        self.prefetch_begin_time_millis = prefetch_begin_time_millis
-
-    def show(self):
-        print("prefetch_begin_time_secs: ", self.prefetch_begin_time_secs)
-        print("prefetch_begin_time_millis: ", self.prefetch_begin_time_millis)
-
-
-def get_prefetch(sock):
-    """
-    get the prefetch begin time from the sock
-    """
-    contents = ""
-    with open(send_request(sock, BLOB_CACHE_METRICS), 'r') as file:
-        contents = file.read()
-    resp = json.loads(contents)
-    return Prefetch(
-        prefetch_begin_time_secs=resp["prefetch_begin_time_secs"],
-        prefetch_begin_time_millis=resp["prefetch_begin_time_millis"]
-    )
-
-
-# def format_number(number, n):
-#     """
-#     Formats the given int number to have n digits, adding trailing zeros if necessary.
-#     """
-#     number_str = str(number)
-#     if len(number_str) < n:
-#         number_str = number_str.zfill(n)
-#     return int(number_str)
 
 
 def random_string():
@@ -454,12 +323,12 @@ def main():
         os.mkdir(TEMP_DIR)
 
 
-def collect(local_registry, insecure_local_registry, image) -> Tuple[str, str]:
+def collect_access(local_registry, insecure_local_registry, image) -> str:
     init()
     cfg = {"registry": local_registry, "insecure_registry": insecure_local_registry, "images": [{"name": image}]}
-    file, ino = MetricsCollector(cfg).start_collet()[0]
+    file = MetricsCollector(cfg).start_collet()[0]
     shutil.rmtree(TEMP_DIR)
-    return file, ino
+    return file
 
 
 if __name__ == "__main__":

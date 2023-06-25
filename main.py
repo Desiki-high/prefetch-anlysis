@@ -16,7 +16,7 @@ import util
 DATA_DIR = "data"
 LOG_DIR = "log"
 CONFIG = "config.yaml"
-PREFETCH_FILE_LIST = "algorithm/out.txt"
+PREFETCH_FILE_LIST = "out_list.txt"
 
 
 def main():
@@ -43,10 +43,10 @@ def main():
         util.clean_env()
     for image in cfg["images"]:
         if cfg["algorithm"]:
-            # collect metrics data
-            file, ino = collect_metrics(cfg, image)
+            # collect metrics dat
+            file = collect_metrics(cfg, image)
             # generate prefetch list
-            _ = alg.get_prefetch_list(file, ino)
+            _ = alg.get_prefetch_list(file)
             # rebuild
             cvt.convert_nydus_prefetch(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image, PREFETCH_FILE_LIST)
         # bench
@@ -63,11 +63,11 @@ def convert(cfg: dict, image: str):
     cvt.convert_nydus(cfg["source_registry"], cfg["insecure_source_registry"], cfg["local_registry"], cfg["insecure_local_registry"], image)
 
 
-def collect_metrics(cfg: dict, image: str) -> Tuple[str, str]:
+def collect_metrics(cfg: dict, image: str) -> str:
     """
     collect metrics
     """
-    return metrics.collect(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image))
+    return metrics.collect_access(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image))
 
 
 def start_bench(cfg: dict, image: str):
