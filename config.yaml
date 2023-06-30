@@ -4,5 +4,6 @@ local_registry: dockerhub.kubekey.local/dfns
 insecure_local_registry: True
 convert: False
 algorithm: False
+batch: False
 images:
  - wordpress:php8.2

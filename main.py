@@ -88,9 +88,10 @@ def start_bench(cfg: dict, image: str):
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus", False)
     # prefetch list
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_prefetch(image), f, "nydus")
-    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_256(image), f, "nydus")
-    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_512(image), f, "nydus")
-    bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_1024(image), f, "nydus")
+    if cfg["batch"]:
+        bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_256(image), f, "nydus")
+        bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_512(image), f, "nydus")
+        bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus_bacth_1024(image), f, "nydus")
     util.switch_config_prefetch_enable()
     util.reload_nydus()
 
