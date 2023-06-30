@@ -83,3 +83,15 @@ def image_nydus(ref: str):
 
 def image_nydus_prefetch(ref: str) -> str:
     return image_repo(ref) + ":" + image_tag(ref) + "_nydus_prefetch"
+
+
+def image_nydus_bacth_256(ref: str) -> str:
+    return image_repo(ref) + ":batch-256k"
+
+
+def image_nydus_bacth_512(ref: str) -> str:
+    return image_repo(ref) + ":batch-512k"
+
+
+def image_nydus_bacth_1024(ref: str) -> str:
+    return image_repo(ref) + ":batch-1024k"

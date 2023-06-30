@@ -3,6 +3,6 @@ insecure_source_registry: False
 local_registry: dockerhub.kubekey.local/dfns
 insecure_local_registry: True
 convert: False
-algorithm: True
+algorithm: False
 images:
  - wordpress:php8.2
