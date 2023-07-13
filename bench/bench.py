@@ -514,7 +514,7 @@ class BenchRunner:
 
     def run_cmd_url_wait(self, repo, runargs):
         image_ref = self.image_ref(repo)
-        container_id = repo.replace(":", "-")
+        container_id = random_chars()
 
         pull_cmd = self.pull_cmd(image_ref)
         print(pull_cmd)

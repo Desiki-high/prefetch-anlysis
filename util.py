@@ -34,7 +34,17 @@ def switch_config_prefetch_enable():
     switch the fs_prefetch.enable status
     """
     config = get_nydus_config()
-    config["fs_prefetch"]["enable"] = not config["fs_prefetch"]["enable"]
+    config["fs_prefetch"]["enable"] = True
+    with open(NYDUS_CONFIG, 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
+
+
+def switch_config_prefetch_unable():
+    """
+    switch the fs_prefetch.enable status
+    """
+    config = get_nydus_config()
+    config["fs_prefetch"]["enable"] = False
     with open(NYDUS_CONFIG, 'w', encoding='utf-8') as f:
         json.dump(config, f, ensure_ascii=False, indent=4)
 
