@@ -81,6 +81,7 @@ def start_bench(cfg: dict, image: str):
     # oci
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], image, f)
     util.switch_config_prefetch_unable()
+    util.reload_nydus()
     # no prefetch
     bench.bench_image(cfg["local_registry"], cfg["insecure_local_registry"], util.image_nydus(image), f, "nydus")
     util.switch_config_prefetch_enable()
