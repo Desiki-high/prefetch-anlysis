@@ -8,7 +8,7 @@ import pandas as pd
 
 def draw(filename_path, dest_path="bench.png"):
     data = pd.read_csv(filename_path)
-    data.columns = ["timestamp", "registry", "repo", "pull_elapsed(s)", "create_elapsed(s)", "run_elapsed(s)", "total_elapsed(s)"]
+    data.columns = ["timestamp", "registry", "repo", "pull_elapsed(s)", "create_elapsed(s)", "run_elapsed(s)", "total_elapsed(s)", "read_count", "read_amount_total"]
     image = data["repo"][0]
     if len(data) == 7:
         data["repo"] = ["oci", "nydus_no_pf", "nydus_all_pf", "nydus_alg_pf", "bacth-256k", "batch-512k", "batch-1024k"]
