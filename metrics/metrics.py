@@ -203,6 +203,23 @@ def get_access_pattern(sock, bootstap_data):
     return access_pattern_list
 
 
+class BackendMetrics:
+    def __init__(self, read_count, read_amount_total):
+        self.read_count = read_count
+        self.read_amount_total = read_amount_total
+
+
+def collect_backend(sock):
+    """
+    collect the backend metrics from the sock
+    """
+    contents = ""
+    with open(send_request(sock, BACKEND_METRICS), 'r') as file:
+        contents = file.read()
+    resp = json.loads(contents)
+    return BackendMetrics(resp["read_count"], resp["read_amount_total"])
+
+
 def random_string():
     """Generate a random string of fixed length """
     return "".join(random.choice(string.ascii_lowercase) for i in range(10))
