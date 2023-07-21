@@ -621,7 +621,10 @@ class BenchRunner:
         return f"nerdctl --snapshotter {self.snapshotter} stop {container_id}"
 
     def clean_up(self, image_ref, container_id) -> metric.BACKEND_METRICS:
-        backend_metric = metric.collect_backend()
+        if self.snapshotter == "nydus":
+            backend_metric = metric.collect_backend()
+        else:
+            backend_metric = metric.BACKEND_METRICS(0, 0)
         print("Cleaning up environment for %s ..." % container_id)
         cmd = self.task_kill_cmd(container_id)
         print(cmd)
