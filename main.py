@@ -75,7 +75,7 @@ def start_bench(cfg: dict, image: str):
     bench oci, nydus without prefetch, nydus with all prefetch, nydus witch alg prefetch
     """
     f = open(util.image_repo(image) + ".csv", "w")
-    csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s)"
+    csv_headers = "timestamp,registry,repo,pull_elapsed(s),create_elapsed(s),run_elapsed(s),total_elapsed(s),read_count,read_amount_total"
     f.writelines(csv_headers + "\n")
     f.flush()
     # oci

@@ -18,6 +18,7 @@ from contextlib import contextmanager
 from datetime import datetime
 from io import TextIOWrapper
 
+import metrics.metrics as metric
 TMP_DIR = tempfile.mkdtemp()
 
 
@@ -379,9 +380,9 @@ class BenchRunner:
         with timer(run_cmd) as t:
             run_elapsed = t
         if self.cleanup:
-            self.clean_up(image_ref, container_name)
+            backend_metric = self.clean_up(image_ref, container_name)
 
-        return pull_elapsed, create_elapsed, run_elapsed
+        return pull_elapsed, create_elapsed, run_elapsed, backend_metric.read_count, backend_metric.read_amount_total
 
     def run_cmd_arg(self, repo, runargs):
         assert len(runargs.mount) == 0
@@ -410,9 +411,9 @@ class BenchRunner:
             run_elapsed = t
 
         if self.cleanup:
-            self.clean_up(image_ref, container_name)
+            backend_metric = self.clean_up(image_ref, container_name)
 
-        return pull_elapsed, create_elapsed, run_elapsed
+        return pull_elapsed, create_elapsed, run_elapsed, backend_metric.read_count, backend_metric.read_amount_total
 
     def run_cmd_arg_wait(self, repo, runargs):
         image_ref = self.image_ref(repo)
@@ -460,9 +461,9 @@ class BenchRunner:
         print("Run time: %f s" % run_elapsed)
 
         if self.cleanup:
-            self.clean_up(image_ref, container_name)
+            backend_metric = self.clean_up(image_ref, container_name)
 
-        return pull_elapsed, create_elapsed, run_elapsed
+        return pull_elapsed, create_elapsed, run_elapsed, backend_metric.read_count, backend_metric.read_amount_total
 
     def run_cmd_stdin(self, repo, runargs):
         image_ref = self.image_ref(repo)
@@ -508,9 +509,9 @@ class BenchRunner:
         print("Run time: %f s" % run_elapsed)
 
         if self.cleanup:
-            self.clean_up(image_ref, container_name)
+            backend_metric = self.clean_up(image_ref, container_name)
 
-        return pull_elapsed, create_elapsed, run_elapsed
+        return pull_elapsed, create_elapsed, run_elapsed, backend_metric.read_count, backend_metric.read_amount_total
 
     def run_cmd_url_wait(self, repo, runargs):
         image_ref = self.image_ref(repo)
@@ -553,9 +554,9 @@ class BenchRunner:
         print("Run time: %f s" % run_elapsed)
 
         if self.cleanup:
-            self.clean_up(image_ref, container_id)
+            backend_metric = self.clean_up(image_ref, container_id)
 
-        return pull_elapsed, create_elapsed, run_elapsed
+        return pull_elapsed, create_elapsed, run_elapsed, backend_metric.read_count, backend_metric.read_amount_total
 
     def pull_cmd(self, image_ref):
         insecure_flag = "--insecure-registry" if self.insecure_registry else ""
@@ -619,7 +620,8 @@ class BenchRunner:
     def task_kill_cmd(self, container_id):
         return f"nerdctl --snapshotter {self.snapshotter} stop {container_id}"
 
-    def clean_up(self, image_ref, container_id):
+    def clean_up(self, image_ref, container_id) -> metric.BACKEND_METRICS:
+        backend_metric = metric.collect_backend()
         print("Cleaning up environment for %s ..." % container_id)
         cmd = self.task_kill_cmd(container_id)
         print(cmd)
@@ -632,6 +634,7 @@ class BenchRunner:
         print(cmd)
         rc = os.system(cmd)
         assert rc == 0
+        return backend_metric
 
 
 def image_repo(ref: str):
@@ -745,7 +748,7 @@ def main():
 
     for bench in benches:
         for _ in range(bench_times):
-            pull_elapsed, create_elapsed, run_elapsed = runner.run(bench)
+            pull_elapsed, create_elapsed, run_elapsed, _, _ = runner.run(bench)
 
             total_elapsed = f"{pull_elapsed + create_elapsed + run_elapsed: .6f}"
             timetamp = int(time.time() * 1000)
@@ -789,16 +792,16 @@ def bench_image(local_registry, insecure_local_registry, image, f: TextIOWrapper
         cleanup=True,
         insecure_registry=insecure_local_registry,
     )
-    pull_elapsed, create_elapsed, run_elapsed = runner.run(bench)
+    pull_elapsed, create_elapsed, run_elapsed, read_count, read_amount_total = runner.run(bench)
     total_elapsed = f"{pull_elapsed + create_elapsed + run_elapsed: .6f}"
     timetamp = int(time.time() * 1000)
     pull_elapsed = f"{pull_elapsed: .6f}"
     create_elapsed = f"{create_elapsed: .6f}"
     run_elapsed = f"{run_elapsed: .6f}"
     if flag:
-        line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+        line = f"{timetamp},{runner.registry[:-1]},{bench.name},{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed},{read_count},{read_amount_total}"
     else:
-        line = f"{timetamp},{runner.registry[:-1]},{bench.name}_prefetchall,{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed}"
+        line = f"{timetamp},{runner.registry[:-1]},{bench.name}_prefetchall,{pull_elapsed},{create_elapsed},{run_elapsed},{total_elapsed},{read_count},{read_amount_total}"
     f.writelines(line + "\n")
     f.flush()
 
