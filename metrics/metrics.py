@@ -209,14 +209,20 @@ class BackendMetrics:
         self.read_amount_total = read_amount_total
 
 
-def collect_backend(sock):
+def collect_backend():
     """
     collect the backend metrics from the sock
     """
+    init()
+    sock = search_file(API_DIR, "api.sock")
+    if sock == None:
+        print("can't find the api.sock")
+        exit(1)
     contents = ""
     with open(send_request(sock, BACKEND_METRICS), 'r') as file:
         contents = file.read()
     resp = json.loads(contents)
+    shutil.rmtree(TEMP_DIR)
     return BackendMetrics(resp["read_count"], resp["read_amount_total"])
 
 
