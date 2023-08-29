@@ -1,5 +1,4 @@
 #! /bin/bash
-#!/bin/bash
 
 nerdctl ps -q | xargs -r nerdctl stop
 nerdctl ps -a -q | xargs -r nerdctl rm

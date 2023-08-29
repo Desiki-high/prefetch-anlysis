@@ -4,24 +4,6 @@ import os
 import shutil
 import subprocess
 
-NYDUS_CONFIG = "/etc/nydus/config.json"
-NYDUS_DIR = "/var/lib/containerd-nydus"
-CONTAINRD_DIR = "/var/lib/containerd"
-NYDUS_RUN_DIR = "/run/containerd-nydus"
-CONTAINRD_RUN_DIR = "/run/containerd"
-
-
-def clean_nerdctl():
-    """
-    clear all containers and images and rm nydus workdir
-    """
-    cmd = ["nerdctl", "rm", "-f", "$(nerdctl ps -aq)"]
-    result = subprocess.run(cmd, capture_output=True)
-    assert result.returncode == 0
-    cmd = ["nerdctl", "rmi", "-f", "$(nerdctl images -q)"]
-    result = subprocess.run(cmd, capture_output=True)
-
-
 def get_nydus_config() -> dict:
     config = []
     with open(NYDUS_CONFIG, 'r', encoding='utf-8') as f:
@@ -57,22 +39,19 @@ def reload_nydus():
 
 
 def clean_env():
-    clean_nerdctl()
-    rc = os.system("systemctl stop nydus-snapshotter.service")
+    rc = os.system("nerdctl ps -q | xargs -r nerdctl stop")
     assert rc == 0
-    rc = os.system("systemctl stop containerd.service")
+    rc = os.system("nerdctl ps -a -q | xargs -r nerdctl rm")
     assert rc == 0
-    if os.path.exists(NYDUS_RUN_DIR):
-        shutil.rmtree(NYDUS_RUN_DIR)
-    if os.path.exists(NYDUS_DIR):
-        shutil.rmtree(NYDUS_DIR)
-    if os.path.exists(CONTAINRD_DIR):
-        shutil.rmtree(CONTAINRD_DIR)
-    if os.path.exists(CONTAINRD_RUN_DIR):
-        shutil.rmtree(CONTAINRD_RUN_DIR)
-    rc = os.system("systemctl start nydus-snapshotter.service")
+    rc = os.system("sudo nerdctl image prune --all -f")
     assert rc == 0
-    rc = os.system("systemctl start containerd.service")
+    rc = os.system("sudo rm -rf ~/logs/*")
+    assert rc == 0
+    rc = os.system("sudo rm -rf ~/logs/*")
+    assert rc == 0
+    # rc = os.system("sudo rm -rf /var/lib/containerd-nydus/cache/*")
+    # assert rc == 0
+    rc = os.system("sudo systemctl restart containerd")
     assert rc == 0
 
 
