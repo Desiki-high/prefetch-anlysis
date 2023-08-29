@@ -4,6 +4,8 @@ import os
 import shutil
 import subprocess
 
+NYDUS_CONFIG = "/etc/nydus/config.json"
+
 def get_nydus_config() -> dict:
     config = []
     with open(NYDUS_CONFIG, 'r', encoding='utf-8') as f:
